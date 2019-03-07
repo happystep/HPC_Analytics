@@ -118,7 +118,7 @@ sge_log_demographics.people[sge_log_demographics.people == 'Unknowing'] = 6
 HAC = AgglomerativeClustering()
 test = sge_log_demographics[['failed', 'aCPU', 'aMaxvmem', 'aMem', 'dep', 'university', 'people']]
 small = test.dropna()
-experiment1 = small.sample(n=100000) #87500 works but takes its sweet time 1706.7160840034485 to be exact
+experiment1 = small.sample(n=100000) #87500 works but takes its sweet time 2999.8902530670166 (50 minutes) to be exact
 attempt1 = np.array(experiment1)
 
 
