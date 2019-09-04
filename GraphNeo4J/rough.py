@@ -9,15 +9,13 @@ url = "http://people.cs.ksu.edu/~huichen/hpc/data-set/slurmUserbased"
 
 data = pd.read_csv(url)
 
-l = []
+file = open("columns.txt", "w+")
+
 for i in data.columns.unique():
-    l.append(i)
+    file.write(i + "\n")
+
 
 # we are going to instead print every item in l on its own line to read better
-for i in l:
-    print(i)
-print(data.shape)
-
 #
 # string_set = []
 #

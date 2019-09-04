@@ -8,6 +8,9 @@ password = "12345"
 
 session = ts.HPCUserDatabase(uri, user,password)
 
+session.print_greeting("hi this is testing the connection to the database")
+session.print_user("happystep")
+
 # headers = pd.read_csv('../humanHead.csv')
 #
 # list_of_head = list(headers) #don't over think... python is simple
