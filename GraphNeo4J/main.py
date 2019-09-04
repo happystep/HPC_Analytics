@@ -43,8 +43,8 @@ session = ts.HPCUserDatabase(uri, user,password)
 
 ### LOADING OF INDEXES
 
-session.create_index()
-print("loading indexes completed\n")
+# session.create_index()
+# print("loading indexes completed\n")
 
 
 
