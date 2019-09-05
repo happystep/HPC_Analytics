@@ -7,12 +7,15 @@ import pandas as pd
 # and feature. You will see the details if you play with them, e.g. one has around 10 millions instances, other has around 3.7 millions.
 url = "http://people.cs.ksu.edu/~huichen/hpc/data-set/slurmUserbased"
 
-data = pd.read_csv(url)
+data = pd.read_csv(url, nrows=3)
+# we will do this to understand the types of the entries, to then infer for reading into Neo4j
+data.to_csv("slurm_three_rows.csv")
 
-file = open("columns.txt", "w+")
 
-for i in data.columns.unique():
-    file.write(i + "\n")
+# file = open("columns.txt", "w+")
+#
+# for i in data.columns.unique():
+#     file.write(i + "\n")
 
 
 # we are going to instead print every item in l on its own line to read better

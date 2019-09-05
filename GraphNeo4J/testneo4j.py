@@ -23,6 +23,9 @@ class HPCUserDatabase(object):
             session.run("MATCH(n) DETACH DELETE n")
             print("database deleted")
 
+    def load_slurm_data(self):
+        pass
+
     def load_data(self):
         with self._driver.session() as session:
              session.run("USING PERIODIC COMMIT LOAD CSV WITH HEADERS FROM "
