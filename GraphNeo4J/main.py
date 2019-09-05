@@ -6,7 +6,7 @@ uri = "bolt://localhost:7687"
 user = "neo4j"
 password = "12345"
 
-session = ts.HPCUserDatabase(uri, user,password)
+session = ts.HPCUserDatabase(uri, user, password)
 
 session.print_greeting("hi this is testing the connection to the database")
 session.print_user("happystep")

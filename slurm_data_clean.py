@@ -180,3 +180,19 @@ for name, model in models:
     print('r2: ', r2s)
 
 #===============end regression===============
+
+### code stolen from Brandon's CIS 890 code for pasrsing requested memory
+def mem_parse(mem):
+    if(mem[-1] == 'G' or mem[-1] == 'g'):
+        return str(int(float(mem[:-1]) * 1024))
+    elif(mem[-1] == 'M' or mem[-1] == 'm'):
+        return str(int(float(mem[:-1])))
+    else:
+        return "1024"
+
+# we actually need to loop thru the rows in the dataframe and select ReqMem
+for index, row in df.iterrows():
+    if row['ReqMem'][-1] == 'c':
+        req_mem_per_cpu = mem_parse(row['ReqMem'][:-1])
+    else:
+        req_mem = mem_parse(row['ReqMem'][:-1])
