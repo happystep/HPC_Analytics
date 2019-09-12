@@ -5,7 +5,11 @@ import pandas as pd
 # further explanation of what makes this dataset different, need to consider using it for loading rows to neo4j
 # this one has user name as a feature, but the other doesn't. Other differences between these two data-sets are instance
 # and feature. You will see the details if you play with them, e.g. one has around 10 millions instances, other has around 3.7 millions.
-url = "http://people.cs.ksu.edu/~huichen/hpc/data-set/slurmUserbased"
+# url = "http://people.cs.ksu.edu/~huichen/hpc/data-set/slurmUserbased"
+# now there is a data-set that is parsed even further.
+# 1. Survey feedback are added (q5, q6, q7);
+# 2. AllocMemTRES is parsed from AllocTRES, ReqMemTRES is parsed from ReqTRES.
+url = "http://people.cs.ksu.edu/~happystep/HPC/slurmUserSurvey"
 
 # data = pd.read_csv(url, nrows=3)
 # # we will do this to understand the types of the entries, to then infer for reading into Neo4j
@@ -13,16 +17,21 @@ url = "http://people.cs.ksu.edu/~huichen/hpc/data-set/slurmUserbased"
 
 data = pd.read_csv(url)
 
-print(data.ReqMem.unique())
-print(data.billing.unique())
-print(data.AllocMem.unique())
-
+print(data.AllocMemTRES.unique())
+print(data[:3])
+print(data.shape)
+#
+# sample = data[:3]
+# file = open("sample.txt", "w+")
+# for i in sample:
+#     file.write(i)
+#     file.write("\n")
+# file.close()
 
 # file = open("columns.txt", "w+")
-#
 # for i in data.columns.unique():
 #     file.write(i + "\n")
-
+# file.close()
 
 # we are going to instead print every item in l on its own line to read better
 #

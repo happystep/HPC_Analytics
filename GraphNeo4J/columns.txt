@@ -50,4 +50,8 @@ SubmitRAW
 StartRAW
 EligibleRAW
 EndRAW
-AllocMem
+ReqMemTRES
+AllocMemTRES
+q5
+q6
+q7
