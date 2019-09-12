@@ -5,3 +5,5 @@ HPC (High Performance Computing) analytics project is focusing on Machine Learni
 Predicting the sufficiency of resource requested in HPC system during job submission time,making HPC resource allocation more efficient and building decision support for HPC users
 
 This specific repository uses python and neo4j to create a property graph database which will be used to run varied ML algorithms. 
+
+Data can be found: http://people.cs.ksu.edu/~happystep/HPC/
