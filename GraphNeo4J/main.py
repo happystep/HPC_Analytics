@@ -11,6 +11,9 @@ session = ts.HPCUserDatabase(uri, user, password)
 session.print_greeting("hi this is testing the connection to the database")
 session.print_user("happystep")
 
+session.show_data()  # never runs? too many nodes?
+session.close()  # never reaches this
+
 # headers = pd.read_csv('../humanHead.csv')
 #
 # list_of_head = list(headers) #don't over think... python is simple

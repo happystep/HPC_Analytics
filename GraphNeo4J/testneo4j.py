@@ -23,6 +23,11 @@ class HPCUserDatabase(object):
             session.run("MATCH(n) DETACH DELETE n")
             print("database deleted")
 
+    def show_data(self):
+        with self._driver.session() as session:
+            result = session.run("MATCH(n) return n")
+            print(result)
+
     def load_slurm_data(self):
         pass
 
