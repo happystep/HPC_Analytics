@@ -1,4 +1,4 @@
-import testneo4j as ts
+from GraphNeo4J import testneo4j as ts
 import pandas as pd
 
 uri = "bolt://localhost:7687"
@@ -36,15 +36,15 @@ session.close()  # never reaches this
 #
 # print(query)
 
-#session.print_user("Luis")
+# session.print_user("Luis")
 
-#filename = '../humanDate+survey.csv'
+# filename = '../humanDate+survey.csv'
 
 # session.delete_database()
-#session.load_data()
+# session.load_data()
 #
-#session.load_test_data() # this will load test_csv that is located on CSLINUX
-#print("loading data complete\n")
+# session.load_test_data() # this will load test_csv that is located on CSLINUX
+# print("loading data complete\n")
 
 
 ### LOADING OF INDEXES
@@ -53,15 +53,12 @@ session.close()  # never reaches this
 # print("loading indexes completed\n")
 
 
-
-
-
 # for test
 # df = pd.read_csv('../test_hpc.csv')
 # print(df['owner'])
 # print(df['job_number'])
 
-#for real
+# for real
 # df = pd.read_csv('../humanDate+survey.csv')
 # for column in df:
 #     print(column + str(type(df[column][0])))
