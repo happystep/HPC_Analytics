@@ -14,6 +14,7 @@
 
 # a function that is used to then graph the data from query into network
 
+import networkx
 
 def rs2graph(rs):
     graph = networkx.MultiDiGraph()
