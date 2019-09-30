@@ -11,7 +11,9 @@ import pandas as pd
 # now there is a data-set that is parsed even further.
 # 1. Survey feedback are added (q5, q6, q7);
 # 2. AllocMemTRES is parsed from AllocTRES, ReqMemTRES is parsed from ReqTRES.
-url = "http://people.cs.ksu.edu/~happystep/HPC/slurmUserSurvey"
+# url = "http://people.cs.ksu.edu/~happystep/HPC/slurmUserSurvey"
+# okay last but not least.... we have slurmUserBasedMemory? lol this one I parsed to have
+url = "http://people.cs.ksu.edu/~happystep/HPC/slurmUserBasedMemory.csv"
 
 data = pd.read_csv(url, nrows=3)
 # we will do this to understand the types of the entries, to then infer for reading into Neo4j
