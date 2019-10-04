@@ -17,8 +17,14 @@ url = "http://people.cs.ksu.edu/~happystep/HPC/slurmUserBasedMemory.csv"
 
 data = pd.read_csv(url, nrows=3)
 # we will do this to understand the types of the entries, to then infer for reading into Neo4j
-data.to_csv("slurm_three_rows.csv")
+# data.to_csv("slurm_three_rows.csv")
 
+# i lied there is one more dataset
+
+url_alt = "http://people.cs.ksu.edu/~huichen/hpc/data-set/slurmUserbased+depUniRole.csv"
+
+alt = pd.read_csv(url_alt)
+print(alt.shape)
 # data = pd.read_csv(url)
 #
 # sample = data[:3]
