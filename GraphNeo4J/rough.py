@@ -12,32 +12,20 @@ import pandas as pd
 # 1. Survey feedback are added (q5, q6, q7);
 # 2. AllocMemTRES is parsed from AllocTRES, ReqMemTRES is parsed from ReqTRES.
 # url = "http://people.cs.ksu.edu/~happystep/HPC/slurmUserSurvey"
-# okay last but not least.... we have slurmUserBasedMemory? lol this one I parsed to have
+# okay last but not least.... we have slurmUserBasedMemory? lol this one I parsed to have, this now also includes dep,
+# and other demo
 url = "http://people.cs.ksu.edu/~happystep/HPC/slurmUserBasedMemory.csv"
 
 data = pd.read_csv(url, nrows=3)
+print(data)
+print(data.columns)
 # we will do this to understand the types of the entries, to then infer for reading into Neo4j
-# data.to_csv("slurm_three_rows.csv")
+data.to_csv("slurm_three_rows.csv")
 
-# i lied there is one more dataset
-
-url_alt = "http://people.cs.ksu.edu/~huichen/hpc/data-set/slurmUserbased+depUniRole.csv"
-
-alt = pd.read_csv(url_alt)
-print(alt.shape)
-# data = pd.read_csv(url)
-#
-# sample = data[:3]
-# file = open("sample.txt", "w+")
-# for i in sample:
-#     file.write(i)
-#     file.write("\n")
-# file.close()
-
-# file = open("columns.txt", "w+")
-# for i in data.columns.unique():
-#     file.write(i + "\n")
-# file.close()
+file = open("columns.txt", "w+")
+for i in data.columns.unique():
+    file.write(i + "\n")
+file.close()
 
 # we are going to instead print every item in l on its own line to read better
 #

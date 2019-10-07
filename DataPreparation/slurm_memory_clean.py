@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import re
 
-df = pd.read_csv("http://people.cs.ksu.edu/~huichen/hpc/data-set/slurmUserbased.csv")
+df = pd.read_csv("http://people.cs.ksu.edu/~huichen/hpc/data-set/slurmUserbased+depUniRole.csv")
 print(df.shape)
 
 
