@@ -55,7 +55,7 @@ class HPCUserDatabase(object):
                         "toFloat(csvLine.UID),"
                         "User: csvLine.User, UserCPU: csvLine.UserCPU, WCKeyID: toFloat(csvLine.WCKeyID),"
                         "WorkDir: csvLine.WorkDir, ReservedRAW: toFloat(csvLine.ReservedRAW), TotalCPURAW: toFloat(csvLine.TotalCPURAW),"
-                        "SystemCPURAW: toFloat(csvLine.SystemCPURAW), UserCPURAW: toFloat(csvLine.UserCPURAW, billing: csvLine.billing,"
+                        "SystemCPURAW: toFloat(csvLine.SystemCPURAW), UserCPURAW: toFloat(csvLine.UserCPURAW), billing: csvLine.billing,"
                         "failed: toFloat(csvLine.failed), SubmitRAW: toFloat(csvLine.SubmitRAW), StartRAW: "
                         "toFloat(csvLine.StartRAW), EligibleRAW: toFloat(csvLine.EligibleRAW), EndRAW: "
                         "toFloat(csvLine.EndRAW), AllocMem: toFloat(csvLine.AllocMem), Dep: "
