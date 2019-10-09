@@ -134,10 +134,14 @@ password = "12345"
 
 session = ts.HPCUserDatabase(uri, user, password)
 rs = session.query_full_set()
-networkx_graph = rs2graph(rs)
+print(rs)
+# networkx_graph = rs2graph(rs)
+
+#print(networkx_graph)
 
 
 
+session.close() 
 
 
 
