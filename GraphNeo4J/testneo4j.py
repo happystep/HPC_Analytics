@@ -24,6 +24,11 @@ class HPCUserDatabase(object):
             session.run("MATCH(n) DETACH DELETE n")
             print("database deleted")
 
+    def query_full_set(self):
+        with self._driver.session() as session:
+            result = session.run("MATCH (n) OPTIONAL MATCH (n)-[r]->() RETURN n, r")
+            print(result)
+
     def show_data(self):
         with self._driver.session() as session:
             result = session.run("MATCH(n) return n")
@@ -99,7 +104,13 @@ class HPCUserDatabase(object):
                         "toInteger(csvLine.q6_proficiency),q7_training: toInteger(csvLine.q7_training) })")
         print("database loaded")
 
-    def create_index(self):
+    def create_slurm_index(self):
+        with self._driver.session() as session:
+            session.run(
+                "CREATE INDEX ON :USER (Account ); CREATE INDEX ON :USER (AllocCPUS ); CREATE INDEX ON :USER (AllocNodes ); CREATE INDEX ON :USER (AllocTRES ); CREATE INDEX ON :USER (AssocID ); CREATE INDEX ON :USER (CPUTime ); CREATE INDEX ON :USER (CPUTimeRAW ); CREATE INDEX ON :USER (DerivedExitCode ); CREATE INDEX ON :USER (Elapsed ); CREATE INDEX ON :USER (ElapsedRaw ); CREATE INDEX ON :USER (Eligible ); CREATE INDEX ON :USER (End ); CREATE INDEX ON :USER (ExitCode ); CREATE INDEX ON :USER (GID ); CREATE INDEX ON :USER (JobID ); CREATE INDEX ON :USER (JobIDRaw ); CREATE INDEX ON :USER (JobName ); CREATE INDEX ON :USER (NCPUS ); CREATE INDEX ON :USER (NNodes ); CREATE INDEX ON :USER (NodeList ); CREATE INDEX ON :USER (Priority ); CREATE INDEX ON :USER (Partition ); CREATE INDEX ON :USER (ReqCPUS ); CREATE INDEX ON :USER (ReqMem ); CREATE INDEX ON :USER (ReqNodes ); CREATE INDEX ON :USER (ReqTRES ); CREATE INDEX ON :USER (Reserved ); CREATE INDEX ON :USER (ResvCPU ); CREATE INDEX ON :USER (ResvCPURAW ); CREATE INDEX ON :USER (Start ); CREATE INDEX ON :USER (State ); CREATE INDEX ON :USER (Submit ); CREATE INDEX ON :USER (SystemCPU ); CREATE INDEX ON :USER (Timelimit ); CREATE INDEX ON :USER (TimelimitRaw ); CREATE INDEX ON :USER (TotalCPU ); CREATE INDEX ON :USER (UID ); CREATE INDEX ON :USER (User ); CREATE INDEX ON :USER (UserCPU ); CREATE INDEX ON :USER (WCKeyID ); CREATE INDEX ON :USER (WorkDir ); CREATE INDEX ON :USER (ReservedRAW ); CREATE INDEX ON :USER (TotalCPURAW ); CREATE INDEX ON :USER (SystemCPURAW ); CREATE INDEX ON :USER (UserCPURAW ); CREATE INDEX ON :USER (billing ); CREATE INDEX ON :USER (failed ); CREATE INDEX ON :USER (SubmitRAW ); CREATE INDEX ON :USER (StartRAW ); CREATE INDEX ON :USER (EligibleRAW ); CREATE INDEX ON :USER (EndRAW ); CREATE INDEX ON :USER (AllocMem ); CREATE INDEX ON :USER (Dep ); CREATE INDEX ON :USER (University ); CREATE INDEX ON :USER (Role ); CREATE INDEX ON :USER (AllocMemTRES ); CREATE INDEX ON :USER (ReqMemTRES )"
+            )
+
+    def create_sge_index(self):
         with self._driver.session() as session:
             session.run(
                 "CREATE INDEX ON :USER (qname) ;CREATE INDEX ON :USER (hostname) ;CREATE INDEX ON :USER (group) ;CREATE INDEX ON :USER (owner) ;CREATE INDEX ON :USER (job_name) ;CREATE INDEX ON :USER (job_number) ;CREATE INDEX ON :USER (submission_time) ;CREATE INDEX ON :USER (start_time) ;CREATE INDEX ON :USER (end_time) ;CREATE INDEX ON :USER (failed) ;CREATE INDEX ON :USER (exit_status) ;CREATE INDEX ON :USER (ru_wallclock) ;CREATE INDEX ON :USER (ru_utime) ;CREATE INDEX ON :USER (ru_stime) ;CREATE INDEX ON :USER (ru_maxrss) ;CREATE INDEX ON :USER (ru_ixrss) ;CREATE INDEX ON :USER (ru_ismrss) ;CREATE INDEX ON :USER (ru_idrss) ;CREATE INDEX ON :USER (ru_isrss) ;CREATE INDEX ON :USER (ru_minflt) ;CREATE INDEX ON :USER (ru_majflt) ;CREATE INDEX ON :USER (ru_nswap) ;CREATE INDEX ON :USER (ru_inblock) ;CREATE INDEX ON :USER (ru_oublock) ;CREATE INDEX ON :USER (ru_msgsnd) ;CREATE INDEX ON :USER (ru_msgrcv) ;CREATE INDEX ON :USER (ru_nsignals) ;CREATE INDEX ON :USER (ru_nvcsw) ;CREATE INDEX ON :USER (ru_nivcsw) ;CREATE INDEX ON :USER (project) ;CREATE INDEX ON :USER (granted_pe) ;CREATE INDEX ON :USER (slots) ;CREATE INDEX ON :USER (task_number) ;CREATE INDEX ON :USER (cpu) ;CREATE INDEX ON :USER (mem) ;CREATE INDEX ON :USER (io) ;CREATE INDEX ON :USER (category) ;CREATE INDEX ON :USER (iow) ;CREATE INDEX ON :USER (pe_taskid) ;CREATE INDEX ON :USER (maxvmem) ;CREATE INDEX ON :USER (dep) ;CREATE INDEX ON :USER (university) ;CREATE INDEX ON :USER (reqTime) ;CREATE INDEX ON :USER (reqMem) ;CREATE INDEX ON :USER (people) ;CREATE INDEX ON :USER (cumaCPU) ;CREATE INDEX ON :USER (cumaReqmem) ;CREATE INDEX ON :USER (minCPU) ;CREATE INDEX ON :USER (minReqMem) ;CREATE INDEX ON :USER (maxCPU) ;CREATE INDEX ON :USER (maxReqMem) ;CREATE INDEX ON :USER (stdCPU) ;CREATE INDEX ON :USER (stdReqMem) ;CREATE INDEX ON :USER (cntUser) ;CREATE INDEX ON :USER (killrate) ;CREATE INDEX ON :USER (q5_experience) ;CREATE INDEX ON :USER (q6_proficiency) ;CREATE INDEX ON :USER (q7_training)")

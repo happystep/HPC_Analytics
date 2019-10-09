@@ -12,6 +12,8 @@ session.print_greeting("hi this is testing the connection to the database")
 session.print_user("happystep")
 
 # session.load_slurm_data()
+
+#session.create_slurm_index()
 session.close()  # never reaches this
 
 # headers = pd.read_csv('../humanHead.csv')

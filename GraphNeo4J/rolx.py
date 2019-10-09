@@ -15,6 +15,9 @@
 # a function that is used to then graph the data from query into network
 
 import networkx
+from GraphNeo4J import testneo4j as ts
+
+
 
 def rs2graph(rs):
     graph = networkx.MultiDiGraph()
@@ -120,6 +123,21 @@ def rs2graph_v3(rs):
                 print("ignoring dangling relationship [no need to worry]")
 
     return graph
+
+
+# this code is what I'm hoping will run and be enough to then get the roles out.
+
+uri = "bolt://localhost:7687"
+
+user = "neo4j"
+password = "12345"
+
+session = ts.HPCUserDatabase(uri, user, password)
+rs = session.query_full_set()
+networkx_graph = rs2graph(rs)
+
+
+
 
 
 
