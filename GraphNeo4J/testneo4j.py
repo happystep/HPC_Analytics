@@ -24,6 +24,15 @@ class HPCUserDatabase(object):
             session.run("MATCH(n) DETACH DELETE n")
             print("database deleted")
 
+    def aggregate_users_create_relationships(self):
+        pass
+
+    def query_small_set(self):
+        with self._driver.session() as session:
+            result = session.run("MATCH (n) OPTIONAL MATCH (n)-[r]->() RETURN n, r limit 50")
+        return(result)
+
+
     def query_full_set(self):
         with self._driver.session() as session:
             result = session.run("MATCH (n) OPTIONAL MATCH (n)-[r]->() RETURN n, r")
