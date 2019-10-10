@@ -11,7 +11,9 @@ session = ts.HPCUserDatabase(uri, user, password)
 session.print_greeting("hi this is testing the connection to the database")
 session.print_user("happystep")
 
-session.load_slurm_data()
+# session.load_slurm_data()
+
+session.aggregate_users_create_relationships()
 
 #session.create_slurm_index()
 session.close()  #
