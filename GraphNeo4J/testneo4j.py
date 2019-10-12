@@ -24,9 +24,9 @@ class HPCUserDatabase(object):
             session.run("MATCH(n) DETACH DELETE n")
             print("database deleted")
 
-    def aggregate_users_create_relationships(self):
+    def users_create_relationships(self):
         with self._driver.session() as session:
-            result = session.run("MATCH (a:User),(b:User) WHERE a.Name = b.User CREATE (a)-[r:Person]->(b) RETURN r")
+            result = session.run("MATCH (a:User),(b:User) WHERE a.User = b.User CREATE (a)-[r:Person]->(b) RETURN r")
         return(result)
 
     def query_small_set(self):
