@@ -140,7 +140,7 @@ uri = "bolt://localhost:7687"
 user = "neo4j"
 password = "12345"
 
-session = ts.HPCUserDatabase(uri, user, password)
+session = ts.HPCJobDatabase(uri, user, password)
 rs = session.query_small_set()
 # rs = session.query_full_set()
 # for i in rs:

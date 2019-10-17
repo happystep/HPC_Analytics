@@ -1,4 +1,6 @@
 import pandas as pd
+import re
+import numpy as np
 
 # url = "http://people.cs.ksu.edu/~happystep/HPC/slurmCleaned"
 # there is also a cleaned version for demographic, graph representation learning.
@@ -14,15 +16,41 @@ import pandas as pd
 # url = "http://people.cs.ksu.edu/~happystep/HPC/slurmUserSurvey"
 # okay last but not least.... we have slurmUserBasedMemory? lol this one I parsed to have, this now also includes dep,
 # and other demo
+
+# parsing mem from AllocTRES and ReqTRES
+def getMem(col):
+    mem = 0
+    if type(col) is not float:
+        for c in col.split(','):
+            if 'mem=' in c:
+                temp = c.split('mem=')[1]
+                if 'M' in temp or 'm' in temp:
+                    mem = np.float16(re.sub(r'M|m', '', temp)) / 1024
+                elif 'T' in temp or 't' in temp:
+                    mem = np.float16(re.sub(r'T|t', '', temp)) * 1024
+                else:
+                    mem = re.sub(r'G|g', '', temp)
+
+    return mem
+
+
+
+
 url = "http://people.cs.ksu.edu/~happystep/HPC/slurmUserBasedMemory.csv"
 
-data = pd.read_csv(url)
-sample = data.sample(1000000)
-# print(data)
-# print(data.columns)
-# # we will do this to understand the types of the entries, to then infer for reading into Neo4j
 
-sample.to_csv("slurm_sample.csv")
+url = "http://people.cs.ksu.edu/~happystep/HPC/slurm_sample.csv"
+df = pd.read_csv(url)
+# sample = data.sample(1000000)
+# # print(data)
+# # print(data.columns)
+# # # we will do this to understand the types of the entries, to then infer for reading into Neo4j
+#
+# sample.to_csv("slurm_sample.csv")
+df['AllocMemTRES'] = df.AllocTRES.apply(lambda x: getMem(x))
+df['ReqMemTRES'] = df.ReqTRES.apply(lambda x: getMem(x))
+df.to_csv("slurm_sample_cleaned.csv")
+
 # l = []
 # file = open("columns.txt", "r")
 # for i in file:

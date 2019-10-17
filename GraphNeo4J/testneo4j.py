@@ -1,7 +1,7 @@
 from neo4j.v1 import GraphDatabase
 
 
-class HPCUserDatabase(object):
+class HPCJobDatabase(object):
 
     def __init__(self, uri, user, password):
         self._driver = GraphDatabase.driver(uri, auth=(user, password))
@@ -26,7 +26,7 @@ class HPCUserDatabase(object):
 
     def users_create_relationships(self):
         with self._driver.session() as session:
-            result = session.run("MATCH (a:User),(b:User) WHERE a.User = b.User CREATE (a)-[r:Person]->(b) RETURN r")
+            result = session.run("MATCH (a:Job),(b:Job) WHERE a.User = b.User CREATE (a)-[r:Person]->(b) RETURN r")
         print('relationships loaded')
         return(result)
 
@@ -49,8 +49,8 @@ class HPCUserDatabase(object):
     def load_slurm_sample_data(self):
         with self._driver.session() as session:
             session.run("USING PERIODIC COMMIT LOAD CSV WITH HEADERS FROM "
-                        "'http://people.cs.ksu.edu/~happystep/HPC/slurm_sample.csv' AS csvLine "
-                        "FIELDTERMINATOR ',' CREATE (u:User {"
+                        "'http://people.cs.ksu.edu/~happystep/HPC/slurm_sample_cleaned.csv' AS csvLine "
+                        "FIELDTERMINATOR ',' CREATE (j:Job {"
                         "Account: csvLine.Account, AllocCPUS: toFloat(csvLine.AllocCPUS), AllocNodes: toFloat(csvLine.AllocNodes),"
                         "AllocTRES: csvLine.AllocTRES, AssocID: toFloat(csvLine.AssocID), CPUTime: csvLine.CPUTime,"
                         "CPUTimeRAW: toFloat(csvLine.CPUTimeRAW), DerivedExitCode: csvLine.DerivedExitCode, Elapsed: "
@@ -85,7 +85,7 @@ class HPCUserDatabase(object):
         with self._driver.session() as session:
             session.run("USING PERIODIC COMMIT LOAD CSV WITH HEADERS FROM "
                         "'http://people.cs.ksu.edu/~happystep/HPC/slurmUserBasedMemory.csv' AS csvLine "
-                        "FIELDTERMINATOR ',' CREATE (u:User {"
+                        "FIELDTERMINATOR ',' CREATE (j:Job {"
                         "Account: csvLine.Account, AllocCPUS: toFloat(csvLine.AllocCPUS), AllocNodes: toFloat(csvLine.AllocNodes),"
                         "AllocTRES: csvLine.AllocTRES, AssocID: toFloat(csvLine.AssocID), CPUTime: csvLine.CPUTime,"
                         "CPUTimeRAW: toFloat(csvLine.CPUTimeRAW), DerivedExitCode: csvLine.DerivedExitCode, Elapsed: "
@@ -120,7 +120,7 @@ class HPCUserDatabase(object):
         with self._driver.session() as session:
             session.run("USING PERIODIC COMMIT LOAD CSV WITH HEADERS FROM "
                         "'http://people.cs.ksu.edu/~happystep/HPC/humanDate+survey.csv' AS csvLine "
-                        "FIELDTERMINATOR ',' CREATE (u:User {"
+                        "FIELDTERMINATOR ',' CREATE (j:Job {"
                         "qname: csvLine.qname, hostname: csvLine.hostname,group: csvLine.group,"
                         "owner: csvLine.owner,job_name: csvLine.job_name,job_number: toInteger(csvLine.job_number),"
                         "submission_time: csvLine.submission_time,start_time: csvLine.start_time,end_time: "
@@ -154,19 +154,19 @@ class HPCUserDatabase(object):
     def create_slurm_index(self):
         with self._driver.session() as session:
             session.run(
-                "CREATE INDEX ON :USER (Account ); CREATE INDEX ON :USER (AllocCPUS ); CREATE INDEX ON :USER (AllocNodes ); CREATE INDEX ON :USER (AllocTRES ); CREATE INDEX ON :USER (AssocID ); CREATE INDEX ON :USER (CPUTime ); CREATE INDEX ON :USER (CPUTimeRAW ); CREATE INDEX ON :USER (DerivedExitCode ); CREATE INDEX ON :USER (Elapsed ); CREATE INDEX ON :USER (ElapsedRaw ); CREATE INDEX ON :USER (Eligible ); CREATE INDEX ON :USER (End ); CREATE INDEX ON :USER (ExitCode ); CREATE INDEX ON :USER (GID ); CREATE INDEX ON :USER (JobID ); CREATE INDEX ON :USER (JobIDRaw ); CREATE INDEX ON :USER (JobName ); CREATE INDEX ON :USER (NCPUS ); CREATE INDEX ON :USER (NNodes ); CREATE INDEX ON :USER (NodeList ); CREATE INDEX ON :USER (Priority ); CREATE INDEX ON :USER (Partition ); CREATE INDEX ON :USER (ReqCPUS ); CREATE INDEX ON :USER (ReqMem ); CREATE INDEX ON :USER (ReqNodes ); CREATE INDEX ON :USER (ReqTRES ); CREATE INDEX ON :USER (Reserved ); CREATE INDEX ON :USER (ResvCPU ); CREATE INDEX ON :USER (ResvCPURAW ); CREATE INDEX ON :USER (Start ); CREATE INDEX ON :USER (State ); CREATE INDEX ON :USER (Submit ); CREATE INDEX ON :USER (SystemCPU ); CREATE INDEX ON :USER (Timelimit ); CREATE INDEX ON :USER (TimelimitRaw ); CREATE INDEX ON :USER (TotalCPU ); CREATE INDEX ON :USER (UID ); CREATE INDEX ON :USER (User ); CREATE INDEX ON :USER (UserCPU ); CREATE INDEX ON :USER (WCKeyID ); CREATE INDEX ON :USER (WorkDir ); CREATE INDEX ON :USER (ReservedRAW ); CREATE INDEX ON :USER (TotalCPURAW ); CREATE INDEX ON :USER (SystemCPURAW ); CREATE INDEX ON :USER (UserCPURAW ); CREATE INDEX ON :USER (billing ); CREATE INDEX ON :USER (failed ); CREATE INDEX ON :USER (SubmitRAW ); CREATE INDEX ON :USER (StartRAW ); CREATE INDEX ON :USER (EligibleRAW ); CREATE INDEX ON :USER (EndRAW ); CREATE INDEX ON :USER (AllocMem ); CREATE INDEX ON :USER (Dep ); CREATE INDEX ON :USER (University ); CREATE INDEX ON :USER (Role ); CREATE INDEX ON :USER (AllocMemTRES ); CREATE INDEX ON :USER (ReqMemTRES )"
+                "CREATE INDEX ON :JOB (Account ); CREATE INDEX ON :JOB (AllocCPUS ); CREATE INDEX ON :JOB (AllocNodes ); CREATE INDEX ON :JOB (AllocTRES ); CREATE INDEX ON :JOB (AssocID ); CREATE INDEX ON :JOB (CPUTime ); CREATE INDEX ON :JOB (CPUTimeRAW ); CREATE INDEX ON :JOB (DerivedExitCode ); CREATE INDEX ON :JOB (Elapsed ); CREATE INDEX ON :JOB (ElapsedRaw ); CREATE INDEX ON :JOB (Eligible ); CREATE INDEX ON :JOB (End ); CREATE INDEX ON :JOB (ExitCode ); CREATE INDEX ON :JOB (GID ); CREATE INDEX ON :JOB (JobID ); CREATE INDEX ON :JOB (JobIDRaw ); CREATE INDEX ON :JOB (JobName ); CREATE INDEX ON :JOB (NCPUS ); CREATE INDEX ON :JOB (NNodes ); CREATE INDEX ON :JOB (NodeList ); CREATE INDEX ON :JOB (Priority ); CREATE INDEX ON :JOB (Partition ); CREATE INDEX ON :JOB (ReqCPUS ); CREATE INDEX ON :JOB (ReqMem ); CREATE INDEX ON :JOB (ReqNodes ); CREATE INDEX ON :JOB (ReqTRES ); CREATE INDEX ON :JOB (Reserved ); CREATE INDEX ON :JOB (ResvCPU ); CREATE INDEX ON :JOB (ResvCPURAW ); CREATE INDEX ON :JOB (Start ); CREATE INDEX ON :JOB (State ); CREATE INDEX ON :JOB (Submit ); CREATE INDEX ON :JOB (SystemCPU ); CREATE INDEX ON :JOB (Timelimit ); CREATE INDEX ON :JOB (TimelimitRaw ); CREATE INDEX ON :JOB (TotalCPU ); CREATE INDEX ON :JOB (UID ); CREATE INDEX ON :JOB (JOB ); CREATE INDEX ON :JOB (JOBCPU ); CREATE INDEX ON :JOB (WCKeyID ); CREATE INDEX ON :JOB (WorkDir ); CREATE INDEX ON :JOB (ReservedRAW ); CREATE INDEX ON :JOB (TotalCPURAW ); CREATE INDEX ON :JOB (SystemCPURAW ); CREATE INDEX ON :JOB (JOBCPURAW ); CREATE INDEX ON :JOB (billing ); CREATE INDEX ON :JOB (failed ); CREATE INDEX ON :JOB (SubmitRAW ); CREATE INDEX ON :JOB (StartRAW ); CREATE INDEX ON :JOB (EligibleRAW ); CREATE INDEX ON :JOB (EndRAW ); CREATE INDEX ON :JOB (AllocMem ); CREATE INDEX ON :JOB (Dep ); CREATE INDEX ON :JOB (University ); CREATE INDEX ON :JOB (Role ); CREATE INDEX ON :JOB (AllocMemTRES ); CREATE INDEX ON :JOB (ReqMemTRES )"
             )
 
     def create_sge_index(self):
         with self._driver.session() as session:
             session.run(
-                "CREATE INDEX ON :USER (qname) ;CREATE INDEX ON :USER (hostname) ;CREATE INDEX ON :USER (group) ;CREATE INDEX ON :USER (owner) ;CREATE INDEX ON :USER (job_name) ;CREATE INDEX ON :USER (job_number) ;CREATE INDEX ON :USER (submission_time) ;CREATE INDEX ON :USER (start_time) ;CREATE INDEX ON :USER (end_time) ;CREATE INDEX ON :USER (failed) ;CREATE INDEX ON :USER (exit_status) ;CREATE INDEX ON :USER (ru_wallclock) ;CREATE INDEX ON :USER (ru_utime) ;CREATE INDEX ON :USER (ru_stime) ;CREATE INDEX ON :USER (ru_maxrss) ;CREATE INDEX ON :USER (ru_ixrss) ;CREATE INDEX ON :USER (ru_ismrss) ;CREATE INDEX ON :USER (ru_idrss) ;CREATE INDEX ON :USER (ru_isrss) ;CREATE INDEX ON :USER (ru_minflt) ;CREATE INDEX ON :USER (ru_majflt) ;CREATE INDEX ON :USER (ru_nswap) ;CREATE INDEX ON :USER (ru_inblock) ;CREATE INDEX ON :USER (ru_oublock) ;CREATE INDEX ON :USER (ru_msgsnd) ;CREATE INDEX ON :USER (ru_msgrcv) ;CREATE INDEX ON :USER (ru_nsignals) ;CREATE INDEX ON :USER (ru_nvcsw) ;CREATE INDEX ON :USER (ru_nivcsw) ;CREATE INDEX ON :USER (project) ;CREATE INDEX ON :USER (granted_pe) ;CREATE INDEX ON :USER (slots) ;CREATE INDEX ON :USER (task_number) ;CREATE INDEX ON :USER (cpu) ;CREATE INDEX ON :USER (mem) ;CREATE INDEX ON :USER (io) ;CREATE INDEX ON :USER (category) ;CREATE INDEX ON :USER (iow) ;CREATE INDEX ON :USER (pe_taskid) ;CREATE INDEX ON :USER (maxvmem) ;CREATE INDEX ON :USER (dep) ;CREATE INDEX ON :USER (university) ;CREATE INDEX ON :USER (reqTime) ;CREATE INDEX ON :USER (reqMem) ;CREATE INDEX ON :USER (people) ;CREATE INDEX ON :USER (cumaCPU) ;CREATE INDEX ON :USER (cumaReqmem) ;CREATE INDEX ON :USER (minCPU) ;CREATE INDEX ON :USER (minReqMem) ;CREATE INDEX ON :USER (maxCPU) ;CREATE INDEX ON :USER (maxReqMem) ;CREATE INDEX ON :USER (stdCPU) ;CREATE INDEX ON :USER (stdReqMem) ;CREATE INDEX ON :USER (cntUser) ;CREATE INDEX ON :USER (killrate) ;CREATE INDEX ON :USER (q5_experience) ;CREATE INDEX ON :USER (q6_proficiency) ;CREATE INDEX ON :USER (q7_training)")
+                "CREATE INDEX ON :JOB (qname) ;CREATE INDEX ON :JOB (hostname) ;CREATE INDEX ON :JOB (group) ;CREATE INDEX ON :JOB (owner) ;CREATE INDEX ON :JOB (job_name) ;CREATE INDEX ON :JOB (job_number) ;CREATE INDEX ON :JOB (submission_time) ;CREATE INDEX ON :JOB (start_time) ;CREATE INDEX ON :JOB (end_time) ;CREATE INDEX ON :JOB (failed) ;CREATE INDEX ON :JOB (exit_status) ;CREATE INDEX ON :JOB (ru_wallclock) ;CREATE INDEX ON :JOB (ru_utime) ;CREATE INDEX ON :JOB (ru_stime) ;CREATE INDEX ON :JOB (ru_maxrss) ;CREATE INDEX ON :JOB (ru_ixrss) ;CREATE INDEX ON :JOB (ru_ismrss) ;CREATE INDEX ON :JOB (ru_idrss) ;CREATE INDEX ON :JOB (ru_isrss) ;CREATE INDEX ON :JOB (ru_minflt) ;CREATE INDEX ON :JOB (ru_majflt) ;CREATE INDEX ON :JOB (ru_nswap) ;CREATE INDEX ON :JOB (ru_inblock) ;CREATE INDEX ON :JOB (ru_oublock) ;CREATE INDEX ON :JOB (ru_msgsnd) ;CREATE INDEX ON :JOB (ru_msgrcv) ;CREATE INDEX ON :JOB (ru_nsignals) ;CREATE INDEX ON :JOB (ru_nvcsw) ;CREATE INDEX ON :JOB (ru_nivcsw) ;CREATE INDEX ON :JOB (project) ;CREATE INDEX ON :JOB (granted_pe) ;CREATE INDEX ON :JOB (slots) ;CREATE INDEX ON :JOB (task_number) ;CREATE INDEX ON :JOB (cpu) ;CREATE INDEX ON :JOB (mem) ;CREATE INDEX ON :JOB (io) ;CREATE INDEX ON :JOB (category) ;CREATE INDEX ON :JOB (iow) ;CREATE INDEX ON :JOB (pe_taskid) ;CREATE INDEX ON :JOB (maxvmem) ;CREATE INDEX ON :JOB (dep) ;CREATE INDEX ON :JOB (university) ;CREATE INDEX ON :JOB (reqTime) ;CREATE INDEX ON :JOB (reqMem) ;CREATE INDEX ON :JOB (people) ;CREATE INDEX ON :JOB (cumaCPU) ;CREATE INDEX ON :JOB (cumaReqmem) ;CREATE INDEX ON :JOB (minCPU) ;CREATE INDEX ON :JOB (minReqMem) ;CREATE INDEX ON :JOB (maxCPU) ;CREATE INDEX ON :JOB (maxReqMem) ;CREATE INDEX ON :JOB (stdCPU) ;CREATE INDEX ON :JOB (stdReqMem) ;CREATE INDEX ON :JOB (cntJOB) ;CREATE INDEX ON :JOB (killrate) ;CREATE INDEX ON :JOB (q5_experience) ;CREATE INDEX ON :JOB (q6_proficiency) ;CREATE INDEX ON :JOB (q7_training)")
 
     def load_test_data(self):
         with self._driver.session() as session:
             session.run("USING PERIODIC COMMIT LOAD CSV WITH HEADERS FROM "
                         "'http://people.cs.ksu.edu/~happystep/HPC/test_hpc.csv' AS csvLine "
-                        "FIELDTERMINATOR ',' CREATE (u:User {"
+                        "FIELDTERMINATOR ',' CREATE (j:JOB {"
                         "qname: csvLine.qname, hostname: csvLine.hostname,group: csvLine.group,"
                         "owner: csvLine.owner,job_name: csvLine.job_name,job_number: toInteger(csvLine.job_number),"
                         "submission_time: csvLine.submission_time,start_time: csvLine.start_time,end_time: "
