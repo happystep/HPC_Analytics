@@ -16,24 +16,26 @@ import pandas as pd
 # and other demo
 url = "http://people.cs.ksu.edu/~happystep/HPC/slurmUserBasedMemory.csv"
 
-# data = pd.read_csv(url, nrows=3)
+data = pd.read_csv(url)
+sample = data.sample(1000000)
 # print(data)
 # print(data.columns)
 # # we will do this to understand the types of the entries, to then infer for reading into Neo4j
-# data.to_csv("slurm_three_rows.csv")
-l = []
-file = open("columns.txt", "r")
-for i in file:
-    l.append(i)
-file.close()
 
-# we are going to instead print every item in l on its own line to read better
-# this code below is to create the index statments for the database
+sample.to_csv("slurm_sample.csv")
+# l = []
+# file = open("columns.txt", "r")
+# for i in file:
+#     l.append(i)
+# file.close()
+#
+# # we are going to instead print every item in l on its own line to read better
+# # this code below is to create the index statments for the database
+#
+# string_set = []
+#
+# for i in l:
+#     string_set.append("CREATE INDEX ON :USER ({0});".format(i))
 
-string_set = []
-
-for i in l:
-    string_set.append("CREATE INDEX ON :USER ({0});".format(i))
-
-for i in string_set:
-    print(i)
+# for i in string_set:
+#     print(i)

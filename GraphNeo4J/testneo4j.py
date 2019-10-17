@@ -27,6 +27,7 @@ class HPCUserDatabase(object):
     def users_create_relationships(self):
         with self._driver.session() as session:
             result = session.run("MATCH (a:User),(b:User) WHERE a.User = b.User CREATE (a)-[r:Person]->(b) RETURN r")
+        print('relationships loaded')
         return(result)
 
     def query_small_set(self):
@@ -44,6 +45,41 @@ class HPCUserDatabase(object):
         with self._driver.session() as session:
             result = session.run("MATCH(n) return n")
             print(result)
+
+    def load_slurm_sample_data(self):
+        with self._driver.session() as session:
+            session.run("USING PERIODIC COMMIT LOAD CSV WITH HEADERS FROM "
+                        "'http://people.cs.ksu.edu/~happystep/HPC/slurm_sample.csv' AS csvLine "
+                        "FIELDTERMINATOR ',' CREATE (u:User {"
+                        "Account: csvLine.Account, AllocCPUS: toFloat(csvLine.AllocCPUS), AllocNodes: toFloat(csvLine.AllocNodes),"
+                        "AllocTRES: csvLine.AllocTRES, AssocID: toFloat(csvLine.AssocID), CPUTime: csvLine.CPUTime,"
+                        "CPUTimeRAW: toFloat(csvLine.CPUTimeRAW), DerivedExitCode: csvLine.DerivedExitCode, Elapsed: "
+                        "csvLine.Elapsed, ElapsedRAW: toFloat(csvLine.ElapsedRAW), Eligible: "
+                        "csvLine.Eligible,"
+                        "End: csvLine.End, ExitCode: csvLine.ExitCode, GID: "
+                        "toFloat(csvLine.GID), JobID: csvLine.JobID, JobIDRaw: "
+                        "toFloat(csvLine.JobIDRaw),"
+                        "JobName: csvLine.JobName, NCPUS: toFloat(csvLine.NCPUS), NNodes: "
+                        "toFloat(csvLine.NNodes),"
+                        "NodeList: csvLine.NodeList, Priority: toFloat(csvLine.Priority), Partition: "
+                        "csvLine.Partition,"
+                        "ReqCPUS: toFloat(csvLine.ReqCPUS), ReqMem: csvLine.ReqMem, ReqNodes: "
+                        "toFloat(csvLine.ReqNodes), ReqTRES: csvLine.ReqTRES, Reserved: "
+                        "csvLine.Reserved, ResvCPU: csvLine.ResvCPU, ResvCPURAW: "
+                        "toFloat(csvLine.ResvCPURAW), Start: csvLine.Start, State: csvLine.State,"
+                        "Submit: csvLine.Submit, SystemCPU: csvLine.SystemCPU,"
+                        "Timelimit: csvLine.Timelimit, TimelimitRaw: toFloat(csvLine.TimelimitRaw), TotalCPU: csvLine.TotalCPU, UID: "
+                        "toFloat(csvLine.UID),"
+                        "User: csvLine.User, UserCPU: csvLine.UserCPU, WCKeyID: toFloat(csvLine.WCKeyID),"
+                        "WorkDir: csvLine.WorkDir, ReservedRAW: toFloat(csvLine.ReservedRAW), TotalCPURAW: toFloat(csvLine.TotalCPURAW),"
+                        "SystemCPURAW: toFloat(csvLine.SystemCPURAW), UserCPURAW: toFloat(csvLine.UserCPURAW), billing: csvLine.billing,"
+                        "failed: toFloat(csvLine.failed), SubmitRAW: toFloat(csvLine.SubmitRAW), StartRAW: "
+                        "toFloat(csvLine.StartRAW), EligibleRAW: toFloat(csvLine.EligibleRAW), EndRAW: "
+                        "toFloat(csvLine.EndRAW), AllocMem: toFloat(csvLine.AllocMem), Dep: "
+                        "csvLine.Dep, University: csvLine.University, Role: "
+                        "csvLine.Role, AllocMemTRES: toFloat(csvLine.AllocMemTRES), ReqMemTRES: "
+                        "toFloat(csvLine.ReqMemTRES)})")
+        print("database loaded")
 
     def load_slurm_data(self):
         with self._driver.session() as session:
