@@ -26,7 +26,7 @@ class HPCJobDatabase(object):
 
     def users_create_relationships(self):
         with self._driver.session() as session:
-            result = session.run("MATCH (a:Job),(b:Job) WHERE a.User = b.User CREATE (a)-[r:Person]->(b) RETURN r")
+            result = session.run("MATCH (a:User),(b:User) WHERE a.User = b.User CREATE (a)-[r:Person]->(b) RETURN r")
         print('relationships loaded')
         return(result)
 
