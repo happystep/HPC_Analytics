@@ -24,9 +24,14 @@ class HPCJobDatabase(object):
             session.run("MATCH(n) DETACH DELETE n")
             print("database deleted")
 
+    def user_count(self):
+        with self._driver.session() as session:
+            result = session.run("MATCH (n) RETURN DISTINCT n.User, count(*) as freq order by freq DESC;")
+            print(result)
+
     def users_create_relationships(self):
         with self._driver.session() as session:
-            result = session.run("MATCH (a:User),(b:User) WHERE a.User = b.User CREATE (a)-[r:Person]->(b) RETURN r")
+            result = session.run("MATCH (a:User),(b:User) WHERE a.User = 'jwryan' AND  b.User = 'jwryan' CREATE (a)-[r:Person]->(b) RETURN type(r)")
         print('relationships loaded')
         return(result)
 

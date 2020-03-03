@@ -38,7 +38,6 @@ def rs2graph(rs):
             nx_properties.update(node._properties)
             nx_properties['labels'] = node.labels
             graph.add_node(node.id, **nx_properties)
-
         relationship = record['r']
         if relationship is not None:   # essential because relationships use hash val
             print("adding edge")
@@ -142,7 +141,7 @@ password = "12345"
 
 session = ts.HPCJobDatabase(uri, user, password)
 rs = session.query_small_set()
-# rs = session.query_full_set()
+# rs = session.query_full_set()   // once we get it to work with the set of 50, we will attempt 600k sample set.
 # for i in rs:
 #     print(i)
 G = rs2graph(rs)

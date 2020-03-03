@@ -13,7 +13,8 @@ session = ts.HPCJobDatabase(uri, user, password)
 
 # session.load_slurm_data()
 #session.load_slurm_sample_data()
-session.users_create_relationships()
+#session.users_create_relationships()
+session.user_count()
 
 #session.create_slurm_index()
 session.close()
