@@ -14,9 +14,26 @@ session = ts.HPCJobDatabase(uri, user, password)
 # session.load_slurm_data()
 #session.load_slurm_sample_data()
 #session.users_create_relationships()
-session.user_count()
+records = session.user_count()  # currently returns list of dictionary's of record retrieved from the BoltStatementReturn
 
-#session.create_slurm_index()
+accepted = []
+# can we limit to the names of users that 10gb of ram can handle? or should I use as much ram as I want?, lets test Jwryan on KAOS4
+for i in records:  # iterating thru the dictionaries in the list of records
+    if i['freq'] > 2047 or i['freq'] == 1:  # if its higher than the amount allowed by 10gb java heap size, ignore,
+        pass
+    else:
+        accepted.append(i)
+
+# number of users
+print(len(accepted))
+#  ^^^ code is sloppy? can I use a filter function on a dictionary?
+
+for j in accepted:
+    result = session.users_create_relationships(j)
+    print(result)
+
+
+#session.create_slurm_index()   # creates indexes using native b-trees for the different features
 session.close()
 
 # headers = pd.read_csv('../humanHead.csv')

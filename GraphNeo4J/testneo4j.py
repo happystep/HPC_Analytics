@@ -25,13 +25,16 @@ class HPCJobDatabase(object):
             print("database deleted")
 
     def user_count(self):
+        list_of_dictionaries = []
         with self._driver.session() as session:
             result = session.run("MATCH (n) RETURN DISTINCT n.User, count(*) as freq order by freq DESC;")
-            print(result)
+            for i in result.records():
+                list_of_dictionaries.append(i.data())
+        return list_of_dictionaries
 
-    def users_create_relationships(self):
+    def users_create_relationships(self, q): #q is the stirng of the user
         with self._driver.session() as session:
-            result = session.run("MATCH (a:User),(b:User) WHERE a.User = 'jwryan' AND  b.User = 'jwryan' CREATE (a)-[r:Person]->(b) RETURN type(r)")
+            result = session.run("MATCH (a:User),(b:User) WHERE a.User = '" + q + "' AND  b.User = '" + q + "' CREATE (a)-[r:Person]->(b) RETURN type(r)")
         print('relationships loaded')
         return(result)
 
