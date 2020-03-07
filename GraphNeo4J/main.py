@@ -20,18 +20,26 @@ accepted = []
 # can we limit to the names of users that 10gb of ram can handle? or should I use as much ram as I want?, lets test Jwryan on KAOS4
 for i in records:  # iterating thru the dictionaries in the list of records
     if i['freq'] > 2047 or i['freq'] == 1:  # if its higher than the amount allowed by 10gb java heap size, ignore,
-        pass
+        continue
+    if i['n.User'] == 'happystep' or i['n.User'] == 'nyine' or i['n.User'] == 'antariksh':
+        continue
     else:
         accepted.append(i)
 
 # number of users
+print(accepted)
 print(len(accepted))
+
 #  ^^^ code is sloppy? can I use a filter function on a dictionary?
 
 for j in accepted:
-    result = session.users_create_relationships(j)
+    name = j['n.User']
+    result = session.users_create_relationships(name)
+    print(str(name) + " relationships added")
     print(result)
 
+
+# should I consider deleting the users that have too many jobs for 10gb or ram? or should I really be doing this on KAOSfff
 
 #session.create_slurm_index()   # creates indexes using native b-trees for the different features
 session.close()

@@ -1,8 +1,9 @@
-# wea re going to get some basic statistics
+# we are going to get some basic statistics
 import pandas as pd
 
-df = pd.read_csv('./clean_slurm.csv')
- # this SHOULD ensure that we have no null values
+url = "http://people.cs.ksu.edu/~happystep/HPC/slurm_sample_cleaned.csv"  # should I be using this set? or the cleaned set.
+df = pd.read_csv(url)
+# this SHOULD ensure that we have no null values
 
 cats = ['State', 'TotalCPU', 'MaxVMSize', 'ReqMem', 'Timelimit','aTotalCPU', 'aMaxVMSize', 'aTimelimit', 'aReqMem']
 
