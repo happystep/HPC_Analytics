@@ -33,29 +33,29 @@ print(len(accepted))
 print(count)
 #  ^^^ code is sloppy? can I use a filter function on a dictionary?
 
-# for j in accepted:
-#     name = j['n.User']
-#     result = session.users_create_relationships(name)
-#     print(str(name) + " relationships added")
-#     print(result)
+for j in accepted:
+    name = j['n.User']
+    result = session.users_create_relationships(name)
+    print(str(name) + " relationships added")
+    print(result)
 
 singleton = []
 
-for e in records:
-    if e['freq'] == 1:
-        singleton.append(e)
-print(len(singleton))
-
-# should I consider deleting the users that have too many jobs for 10gb or ram? or should I really be doing this on KAOS
-large = []
-
-for d in records:
-    if d['freq'] > 2047:
-        large.append(d)
-
-print(len(large))
-for j in large:
-    print(j)
+# for e in records:
+#     if e['freq'] == 1:
+#         singleton.append(e)
+# print(len(singleton))
+#
+# # should I consider deleting the users that have too many jobs for 10gb or ram? or should I really be doing this on KAOS
+# large = []
+#
+# for d in records:
+#     if d['freq'] > 2047:
+#         large.append(d)
+#
+# print(len(large))
+# for j in large:
+#     print(j)
 
 #session.create_slurm_index()   # creates indexes using native b-trees for the different features
 session.close()

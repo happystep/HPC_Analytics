@@ -32,9 +32,10 @@ class HPCJobDatabase(object):
                 list_of_dictionaries.append(i.data())
         return list_of_dictionaries
 
+# CREATE (a)-[r:RELTYPE { name: a.name + '<->' + b.name }]->(b)
     def users_create_relationships(self, q): #q is the stirng of the user
         with self._driver.session() as session:
-            result = session.run("MATCH (a:User),(b:User) WHERE a.User = '" + q + "' AND  b.User = '" + q + "' CREATE (a)-[r:Person]->(b) RETURN type(r)")
+            result = session.run("MATCH (a:User),(b:User) WHERE a.User = '" + q + "' AND  b.User = '" + q + "' CREATE (a)-[r:Person { name: a.User + '<->' + b.User }]->(b) RETURN type(r)")
         print('relationships loaded')
         return(result)
 
