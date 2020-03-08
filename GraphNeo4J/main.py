@@ -16,30 +16,41 @@ count = 0
 #session.users_create_relationships()
 records = session.user_count()  # currently returns list of dictionary's of record retrieved from the BoltStatementReturn
 print(len(records))
-accepted = []
-# can we limit to the names of users that 10gb of ram can handle? or should I use as much ram as I want?, lets test Jwryan on KAOS4
-for i in records:  # iterating thru the dictionaries in the list of records
-    if i['freq'] > 2047 or i['freq'] == 1:  # if its higher than the amount allowed by 10gb java heap size, ignore,
-        continue
-    # if i['n.User'] == 'happystep' or i['n.User'] == 'nyine' or i['n.User'] == 'antariksh':
-    #     count+=1
-    #     continue
-    else:
-        accepted.append(i)
 
-# number of users
-print(accepted)
-print(len(accepted))
-print(count)
-#  ^^^ code is sloppy? can I use a filter function on a dictionary?
-
-for j in accepted:
+for j in records:
     name = j['n.User']
     result = session.users_create_relationships(name)
     print(str(name) + " relationships added")
     print(result)
 
-singleton = []
+# resultsingleton = []
+#
+#
+#
+# accepted = []
+# can we limit to the names of users that 10gb of ram can handle? or should I use as much ram as I want?, lets test Jwryan on KAOS4
+# for i in records:  # iterating thru the dictionaries in the list of records
+#     if i['freq'] > 2047 or i['freq'] == 1:  # if its higher than the amount allowed by 10gb java heap size, ignore,
+#         continue
+#     # if i['n.User'] == 'happystep' or i['n.User'] == 'nyine' or i['n.User'] == 'antariksh':
+#     #     count+=1
+#     #     continue
+#     else:
+#         accepted.append(i)
+
+# # number of users
+# print(accepted)
+# print(len(accepted))
+# print(count)
+#  ^^^ code is sloppy? can I use a filter function on a dictionary?
+#
+# for j in accepted:
+#     name = j['n.User']
+#     result = session.users_create_relationships(name)
+#     print(str(name) + " relationships added")
+#     print(result)
+#
+# singleton = []
 
 # for e in records:
 #     if e['freq'] == 1:
