@@ -10,18 +10,19 @@ session = ts.HPCJobDatabase(uri, user, password)
 
 # session.print_greeting("hi this is testing the connection to the database")
 # session.print_user("happystep")
-
+count = 0
 # session.load_slurm_data()
 #session.load_slurm_sample_data()
 #session.users_create_relationships()
 records = session.user_count()  # currently returns list of dictionary's of record retrieved from the BoltStatementReturn
-
+print(len(records))
 accepted = []
 # can we limit to the names of users that 10gb of ram can handle? or should I use as much ram as I want?, lets test Jwryan on KAOS4
 for i in records:  # iterating thru the dictionaries in the list of records
     if i['freq'] > 2047 or i['freq'] == 1:  # if its higher than the amount allowed by 10gb java heap size, ignore,
         continue
     if i['n.User'] == 'happystep' or i['n.User'] == 'nyine' or i['n.User'] == 'antariksh':
+        count+=1
         continue
     else:
         accepted.append(i)
@@ -29,17 +30,32 @@ for i in records:  # iterating thru the dictionaries in the list of records
 # number of users
 print(accepted)
 print(len(accepted))
-
+print(count)
 #  ^^^ code is sloppy? can I use a filter function on a dictionary?
 
-for j in accepted:
-    name = j['n.User']
-    result = session.users_create_relationships(name)
-    print(str(name) + " relationships added")
-    print(result)
+# for j in accepted:
+#     name = j['n.User']
+#     result = session.users_create_relationships(name)
+#     print(str(name) + " relationships added")
+#     print(result)
 
+singleton = []
 
-# should I consider deleting the users that have too many jobs for 10gb or ram? or should I really be doing this on KAOSfff
+for e in records:
+    if e['freq'] == 1:
+        singleton.append(e)
+print(len(singleton))
+
+# should I consider deleting the users that have too many jobs for 10gb or ram? or should I really be doing this on KAOS
+large = []
+
+for d in records:
+    if d['freq'] > 2047:
+        large.append(d)
+
+print(len(large))
+for j in large:
+    print(j)
 
 #session.create_slurm_index()   # creates indexes using native b-trees for the different features
 session.close()
