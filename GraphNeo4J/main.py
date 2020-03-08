@@ -21,9 +21,9 @@ accepted = []
 for i in records:  # iterating thru the dictionaries in the list of records
     if i['freq'] > 2047 or i['freq'] == 1:  # if its higher than the amount allowed by 10gb java heap size, ignore,
         continue
-    if i['n.User'] == 'happystep' or i['n.User'] == 'nyine' or i['n.User'] == 'antariksh':
-        count+=1
-        continue
+    # if i['n.User'] == 'happystep' or i['n.User'] == 'nyine' or i['n.User'] == 'antariksh':
+    #     count+=1
+    #     continue
     else:
         accepted.append(i)
 
