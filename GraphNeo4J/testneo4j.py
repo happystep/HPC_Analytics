@@ -3,8 +3,8 @@ from neo4j.v1 import GraphDatabase
 
 class HPCJobDatabase(object):
 
-    def __init__(self, uri, user, password, max_connection):
-        self._driver = GraphDatabase.driver(uri, auth=(user, password), max_connection_lifetime=max_connection)
+    def __init__(self, uri, user, password):
+        self._driver = GraphDatabase.driver(uri, auth=(user, password))
 
     def close(self):
         self._driver.close()
@@ -18,6 +18,11 @@ class HPCJobDatabase(object):
         with self._driver.session() as session:
             user = session.write_transaction(self._create_user, name)
             print(user)
+
+    def delete_user(self, q):
+        with self._driver.session() as session:
+            session.run("MATCH(n) where n.User = " + q + " detach delete n")
+            print("user " + q + " deleted")
 
     def delete_database(self):
         with self._driver.session() as session:

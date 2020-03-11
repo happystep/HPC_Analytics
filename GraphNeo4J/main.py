@@ -6,7 +6,7 @@ uri = "bolt://localhost:7687"
 user = "neo4j"
 password = "12345"
 
-session = ts.HPCJobDatabase(uri, user, password, 1800)
+session = ts.HPCJobDatabase(uri, user, password)
 
 # session.print_greeting("hi this is testing the connection to the database")
 # session.print_user("happystep")
@@ -82,12 +82,10 @@ for i in large:
     print(i)
 
 print()
-print("lets load large")
+print("lets delete large")
 for j in large:
     name = j['n.User']
-    result = session.users_create_relationships(name)
-    print(str(name) + " relationships added")
-    print(result)
+    session.users_create_relationships(name)
 
 
 
