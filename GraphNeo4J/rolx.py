@@ -42,8 +42,7 @@ def rs2graph(rs):
         if relationship is not None:   # essential because relationships use hash val
             print("adding edge")
             graph.add_edge(
-                relationship.start, relationship.end, key=relationship.type,
-                **relationship.properties
+                relationship.start, relationship.end, key=relationship.type
             )
 
     return graph
