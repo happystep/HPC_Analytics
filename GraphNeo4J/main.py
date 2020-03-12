@@ -85,7 +85,7 @@ print()
 print("lets delete large")
 for j in large:
     name = j['n.User']
-    session.users_create_relationships(name)
+    session.delete_user(name)
 
 
 

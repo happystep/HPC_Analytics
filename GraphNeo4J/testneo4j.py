@@ -21,7 +21,7 @@ class HPCJobDatabase(object):
 
     def delete_user(self, q):
         with self._driver.session() as session:
-            session.run("MATCH(n) where n.User = " + q + " detach delete n")
+            session.run("MATCH(n) where n.User = '" + q + "' detach delete n")
             print("user " + q + " deleted")
 
     def delete_database(self):
