@@ -139,8 +139,8 @@ user = "neo4j"
 password = "12345"
 
 session = ts.HPCJobDatabase(uri, user, password)
-rs = session.query_small_set()
-# rs = session.query_full_set()   # once we get it to work with the smaller set, we will attempt full sample set.
+#rs = session.query_small_set()
+rs = session.query_full_set()   # once we get it to work with the smaller set, we will attempt full sample set.
 # for i in rs:
 #     print(i)
 G = rs2graph(rs)
@@ -170,7 +170,7 @@ print(role_extractor.role_percentage.round(2))
 
 print('\nSaving Output Files')
 
-node_roles_pandas = pd.DataFrame.from_dict(node_roles)
+node_roles_pandas = pd.DataFrame(node_roles, index=[0] )
 node_roles_pandas.to_csv('node_role_assignment.csv')
 role_extractor.role_percentage.round(2).to_csv('node_role_membership_by_percentage.csv')
 
