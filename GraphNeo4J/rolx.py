@@ -139,17 +139,24 @@ user = "neo4j"
 password = "12345"
 
 session = ts.HPCJobDatabase(uri, user, password)
-#rs = session.query_small_set()
+# rs = session.query_small_set()
 rs = session.query_full_set()   # once we get it to work with the smaller set, we will attempt full sample set.
-# for i in rs:
-#     print(i)
+list_of_records = []
+for i in rs:
+     list_of_records.append(i.data('n'))
+
+print(list_of_records[1].keys())
+print(type(list_of_records[1]))
+records_frame = pd.DataFrame(list_of_records)
+print(records_frame)
+print(type(records_frame))
+records_frame.to_csv("records_frame.csv")
+
 G = rs2graph(rs)
 
 print(G)
 
-
-
-session.close() 
+session.close()
 
 feature_extractor = RecursiveFeatureExtractor(G)
 features = feature_extractor.extract_features()
