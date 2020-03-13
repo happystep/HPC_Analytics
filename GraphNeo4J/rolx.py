@@ -16,7 +16,7 @@
 
 import networkx
 from GraphNeo4J import testneo4j as ts
-
+import pandas as pd
 import warnings
 from pprint import pprint
 
@@ -140,7 +140,7 @@ password = "12345"
 
 session = ts.HPCJobDatabase(uri, user, password)
 rs = session.query_small_set()
-# rs = session.query_full_set()   // once we get it to work with the set of 50, we will attempt 600k sample set.
+# rs = session.query_full_set()   # once we get it to work with the smaller set, we will attempt full sample set.
 # for i in rs:
 #     print(i)
 G = rs2graph(rs)
@@ -166,28 +166,38 @@ pprint(node_roles)
 
 print('\nNode role membership by percentage:')
 print(role_extractor.role_percentage.round(2))
-# build color palette for plotting
-unique_roles = sorted(set(node_roles.values()))
-color_map = sns.color_palette('Paired', n_colors=len(unique_roles))
-# map roles to colors
-role_colors = {role: color_map[i] for i, role in enumerate(unique_roles)}
-# build list of colors for all nodes in G
-node_colors = [role_colors[node_roles[node]] for node in G.nodes]
 
-# plot graph
-plt.figure()
 
-with warnings.catch_warnings():
-    # catch matplotlib deprecation warning
-    warnings.simplefilter('ignore')
-    nx.draw(
-        G,
-        pos=nx.spring_layout(G, seed=42),
-        with_labels=True,
-        node_color=node_colors,
-    )
+print('\nSaving Output Files')
 
-plt.show()
+node_roles_pandas = pd.DataFrame.from_dict(node_roles)
+node_roles_pandas.to_csv('node_role_assignment.csv')
+role_extractor.role_percentage.round(2).to_csv('node_role_membership_by_percentage.csv')
+
+# PLOTTING
+
+# # build color palette for plotting
+# unique_roles = sorted(set(node_roles.values()))
+# color_map = sns.color_palette('Paired', n_colors=len(unique_roles))
+# # map roles to colors
+# role_colors = {role: color_map[i] for i, role in enumerate(unique_roles)}
+# # build list of colors for all nodes in G
+# node_colors = [role_colors[node_roles[node]] for node in G.nodes]
+
+# # plot graph
+# plt.figure()
+#
+# with warnings.catch_warnings():
+#     # catch matplotlib deprecation warning
+#     warnings.simplefilter('ignore')
+#     nx.draw(
+#         G,
+#         pos=nx.spring_layout(G, seed=42),
+#         with_labels=True,
+#         node_color=node_colors,
+#     )
+#
+# plt.show()
 
 
 

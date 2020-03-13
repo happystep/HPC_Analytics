@@ -16,10 +16,16 @@ count = 0
 #session.users_create_relationships()
 records = session.user_count()  # currently returns list of dictionary's of record retrieved from the BoltStatementReturn
 print("record data")
+record_count = len(records)
 print(len(records))
+print(records)
+
 record_rows = 0
 for e in records:
     record_rows += e['freq']
+
+mean = record_rows/record_count
+print("Mean of frequency is " + str(mean))
 
 print(record_rows)
 # resultsingleton = []
@@ -72,22 +78,36 @@ print(accepted_rows)
 # # should I consider deleting the users that have too many jobs for 10gb or ram? or should I really be doing this on KAOS
 large = []
 print()
-print("Users with larger large frequencies")
-for d in records:
-    if d['freq'] > 2047:
-        large.append(d)
+# print("Users with larger large frequencies")
+# for d in records:
+#     if d['freq'] > 2047:
+#         large.append(d)
+#
+# print(len(large))
+# for i in large:
+#     print(i)
+#
+# print()
+# print("lets delete large")
+# for j in large:
+#     name = j['n.User']
+#     session.delete_user(name)
 
-print(len(large))
-for i in large:
-    print(i)
-
-print()
-print("lets delete large")
-for j in large:
-    name = j['n.User']
-    session.delete_user(name)
-
-
+# singleton = []
+# print("Users with small frequencies")
+# for d in records:
+#     if d['freq'] < 4:
+#         large.append(d)
+#
+# print(len(singleton))
+# for i in singleton:
+#     print(i)
+#
+# print()
+# print("lets delete large")
+# for j in large:
+#     name = j['n.User']
+#     session.delete_user(name)
 
 
 

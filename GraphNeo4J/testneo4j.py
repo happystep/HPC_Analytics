@@ -46,14 +46,14 @@ class HPCJobDatabase(object):
 
     def query_small_set(self):
         with self._driver.session() as session:
-            result = session.run("MATCH (n) OPTIONAL MATCH (n)-[r]->() RETURN n, r limit 50")
+            result = session.run("MATCH (n) OPTIONAL MATCH (n)-[r]->() RETURN n, r limit 16500")
         return(result)
 
 
     def query_full_set(self):
         with self._driver.session() as session:
             result = session.run("MATCH (n) OPTIONAL MATCH (n)-[r]->() RETURN n, r")
-            print(result)
+        return(result)
 
     def show_data(self):
         with self._driver.session() as session:
