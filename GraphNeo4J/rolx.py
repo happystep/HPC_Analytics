@@ -173,6 +173,7 @@ print('\nSaving Output Files')
 node_roles_pandas = pd.DataFrame(node_roles, index=[0] )
 node_roles_pandas.to_csv('node_role_assignment.csv')
 role_extractor.role_percentage.round(2).to_csv('node_role_membership_by_percentage.csv')
+features.to_csv('features_extracted.csv')
 
 # PLOTTING
 
