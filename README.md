@@ -7,3 +7,4 @@ Predicting the sufficiency of resource requested in HPC system during job submis
 This specific repository uses python and neo4j to create a property graph database which will be used to run varied ML algorithms. 
 
 Data can be found: http://people.cs.ksu.edu/~happystep/HPC/
+Project Site: http://www.kddresearch.com/page/70/
