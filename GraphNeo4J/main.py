@@ -1,4 +1,4 @@
-from GraphNeo4J import testneo4j as ts
+from GraphNeo4J import neo4j as ts
 import pandas as pd
 
 uri = "bolt://localhost:7687"

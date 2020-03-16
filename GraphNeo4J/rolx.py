@@ -15,7 +15,7 @@
 # a function that is used to then graph the data from query into network
 
 import networkx
-from GraphNeo4J import testneo4j as ts
+from GraphNeo4J import neo4j as ts
 import pandas as pd
 import warnings
 from pprint import pprint
