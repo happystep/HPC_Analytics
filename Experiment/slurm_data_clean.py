@@ -4,7 +4,7 @@ import numpy as np
 import datetime
 import re
 
-path = './data/slurmData.txt'
+path = 'http://people.cs.ksu.edu/~happystep/HPC/slurmData.txt'
 df = pd.read_csv(path, sep='|', encoding='ISO-8859-1')
 
 print("Total Dataset:")
