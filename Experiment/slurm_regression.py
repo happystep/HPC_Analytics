@@ -40,7 +40,7 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.svm import SVR
 
 
-df = pd.read_csv('../Data/slurm_role_cleaned.csv')
+df = pd.read_csv('http://people.cs.ksu.edu/~happystep/HPC/slurm_role_cleaned.csv')
 t1 = df.dropna() # this SHOULD ensure that we have no null values
 
 temp = t1[['State', 'ReqMem', 'Timelimit','role']]

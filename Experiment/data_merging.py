@@ -10,18 +10,10 @@ features_extracted_url = "http://people.cs.ksu.edu/~happystep/HPC/features_extra
 node_role_membership_by_percentage_url = "http://people.cs.ksu.edu/~happystep/HPC/node_role_membership_by_percentage.csv"
 transposed_roles_url = "http://people.cs.ksu.edu/~happystep/HPC/transposed_roles.csv"
 
-
-# LOCAL FILES TO BE DELETED, not in repo
-node_role_assignment_local = "../Data/node_role_assignment.csv"
-reduced_set_local = "../Data/reduced_set.csv"
-transposed_roles_local = "../Data/transposed_roles.csv"
-
-# transposed_roles = pd.read_csv(transposed_roles_url)
-transposed_roles = pd.read_csv(transposed_roles_local)  # change to URL above
+transposed_roles = pd.read_csv(transposed_roles_url)
 print(transposed_roles)
 
-# reduced_set = pd.read_csv(reduced_set_url)
-reduced_set = pd.read_csv(reduced_set_local)  # CHANGE TO URL above
+reduced_set = pd.read_csv(reduced_set_url)
 print(reduced_set)
 
 

@@ -34,7 +34,7 @@ from sklearn.metrics import accuracy_score
 from sklearn import preprocessing
 from sklearn import utils
 
-df = pd.read_csv('../Data/slurm_role_cleaned.csv')
+df = pd.read_csv('http://people.cs.ksu.edu/~happystep/HPC/slurm_role_cleaned.csv')
 t1 = df.dropna() # this SHOULD ensure that we have no null values
 
 temp = t1[['State', 'ReqMem', 'Timelimit','role']]

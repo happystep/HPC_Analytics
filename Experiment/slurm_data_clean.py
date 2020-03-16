@@ -19,8 +19,8 @@ def getMem(col):
 
 
 
-path = '../Data/merged_set.csv'
-df = pd.read_csv(path)
+url = 'http://people.cs.ksu.edu/~happystep/HPC/merged_set.csv'
+df = pd.read_csv(url)
 
 print("Total Dataset:")
 print(df.shape)

@@ -1,7 +1,7 @@
 # we are going to get some basic statistics
 import pandas as pd
 
-path = "../Data/slurm_role_cleaned.csv"
+path = "http://people.cs.ksu.edu/~happystep/HPC/slurm_role_cleaned.csv"
 df = pd.read_csv(path)
 # this SHOULD ensure that we have no null values
 
