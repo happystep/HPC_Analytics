@@ -40,12 +40,12 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.svm import SVR
 
 
-df = pd.read_csv('./clean_slurm.csv')
+df = pd.read_csv('../Data/slurm_role_cleaned.csv')
 t1 = df.dropna() # this SHOULD ensure that we have no null values
 
-temp = t1[['State', 'TotalCPU', 'MaxVMSize', 'ReqMem', 'Timelimit','aTotalCPU', 'aMaxVMSize', 'aTimelimit', 'aReqMem']]
+temp = t1[['State', 'ReqMem', 'Timelimit','role']]
 
-newdf = temp.sample(n=1000001)
+newdf = temp
 
 fdf = newdf
 
@@ -57,13 +57,10 @@ models.append(('Ridge', Ridge()))
 models.append(('CART', DecisionTreeRegressor()))
 
 # memory 
-#xt = fdf[['MaxVMSize', 'ReqMem', 'aMaxVMSize', 'aReqMem']]
-
-# cpu
-xt = fdf[['TotalCPU', 'Timelimit', 'aTotalCPU', 'aTimelimit']]
+xt = fdf[['ReqMem', 'Timelimit','role']]
 
 xt = preprocessing.StandardScaler().fit_transform(xt.sample(frac=0.1))
-x = xt[:,1:3]
+x = xt[:,1:2]
 y = xt[:,0]
 
 x_train, x_validation, y_train, y_validation = model_selection.train_test_split(x, y, test_size=0.2, random_state=7)

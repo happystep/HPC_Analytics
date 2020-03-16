@@ -1,5 +1,11 @@
 # Code Modified originally written by Huichen 
 
+# general stats
+# Total Passed Jobs = 32612
+# Total Failed Jobs = 27740
+# Percentage Passed Jobs = 54.0363202545069%
+# Percentage Failed Jobs = 45.96367974549311%
+
 #=================start classification=================
 import pandas as pd
 import numpy as np
@@ -28,23 +34,23 @@ from sklearn.metrics import accuracy_score
 from sklearn import preprocessing
 from sklearn import utils
 
-df = pd.read_csv('./clean_slurm.csv')
+df = pd.read_csv('../Data/slurm_role_cleaned.csv')
 t1 = df.dropna() # this SHOULD ensure that we have no null values
 
-temp = t1[['State', 'TotalCPU', 'MaxVMSize', 'ReqMem', 'Timelimit','aTotalCPU', 'aMaxVMSize', 'aTimelimit', 'aReqMem']]
+temp = t1[['State', 'ReqMem', 'Timelimit','role']]
 
-newdf = temp.sample(n=1000001)
+newdf = temp
 
 fdf = newdf
 # classification for State = 1, failed
 
-xt = fdf[['State', 'Timelimit', 'ReqMem', 'aTotalCPU', 'aTimelimit' ,'aReqMem']]
+xt = fdf[['State', 'ReqMem', 'Timelimit','role']]
 xt.fillna(0)
 
 a = xt.sample(frac=0.1)
 xt = preprocessing.StandardScaler().fit_transform(a)
 
-x = xt[:,1:5]   
+x = xt[:,1:3]
 y = xt[:, 0]
 
 y=y.astype('int')
