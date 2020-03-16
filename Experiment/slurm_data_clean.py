@@ -4,8 +4,23 @@ import numpy as np
 import datetime
 import re
 
-path = 'http://people.cs.ksu.edu/~happystep/HPC/slurmData.txt'
-df = pd.read_csv(path, sep='|', encoding='ISO-8859-1')
+def getMem(col):
+    mem = 0
+    if type(col) is not float:
+                temp = col[-2:]
+                if 'M' in temp or 'm' in temp:
+                    mem = int(col[:-2]) / 1024
+                elif 'T' in temp or 't' in temp:
+                    mem = int(col[:-2]) * 1024
+                else:
+                    mem = col[:-2]
+
+    return mem
+
+
+
+path = '../Data/merged_set.csv'
+df = pd.read_csv(path)
 
 print("Total Dataset:")
 print(df.shape)
@@ -18,23 +33,14 @@ print("Total Dataset after filter:")
 print(t1.shape)
 
 # reduce columns
-t2 = t1[['User', 'State', 'Account', 'TotalCPU', 'MaxVMSize','ReqMem', 'Timelimit']]
+t2 = t1
 
 t3 = t2.dropna(axis=0, how='any', thresh=3) # I'm . going to try the tresh of 3/7 total features
-t3.shape
+print("Total Dataset after dropna:")
+print(t3.shape)
 t4 = t3.fillna('0M')
 
-t4['MaxVMSize'] = t4.MaxVMSize.apply(lambda x : (re.sub("\D",'',x)))
-
-t4.drop(t4.index[t4['MaxVMSize'] == ''], inplace = True)
-
-t4['MaxVMSize'] = t4['MaxVMSize'].astype(float)
-
-average = t4.groupby('User', as_index=False)['MaxVMSize'].mean() # 'TotalCPU' also needs to be dealt with 
-average.columns = ['User','aMaxVMSize']
-
-t5 = pd.merge(t4, average, on=['User'])
-
+t5 = t4
 
 count = 0
 new_col = {}
@@ -49,7 +55,7 @@ curr_data = pd.Series(new_col).to_frame('State')
 newdf_ = pd.DataFrame(curr_data)
 
 t5 = pd.concat([curr, newdf_], axis=1)
-
+print(t5.State.unique())
 
 t5.State[t5.State == 'COMPLETED'] = 0
 t5.State[t5.State == 'TIMEOUT'] = 1
@@ -62,68 +68,26 @@ t5.State[t5.State == 'CANCELLED'] = 1
 t5.State[t5.State == 'NODE_FAIL'] = 1
 t5.State[t5.State == 'PENDING'] = 1
 
-# format of TOTAL CPU  [days-]hours:minutes:seconds[.microseconds]
+print(t5)
 
-new_frame = {} # empty dictionary
-count = 0
-for x in t5.TotalCPU:
-    if '-' in x:
-        y = x.split('-')
-        hours = 24*(y[0])
-        if len(y) >= 1:
-            z = y[1].split(':')
-            total_hours = hours + z[0]
-            new_date_time = total_hours + ":" + z[1] + ":" + z[2]
-            new_frame[count] = new_date_time
-    else:
-        new_frame[count] = x
-    count += 1
 
-# this should put it into seconds
-for key, value in new_frame.items():
-    r = value.split(':')
-    if len(r) == 1:
-        if r[0] == '0M':
-            new_frame[key] = 0
-        else:
-            new_frame[key] = float(r[0])
-    elif len(r) == 2:
-        new_frame[key] = float(r[0]) * 60 + float(r[1])
-    else:
-        new_frame[key] = float(r[0]) * 3600 + float(r[1]) * 60 + float(r[2])
+t8 = t5
 
-t6 = t5.drop(['TotalCPU'], axis=1)
+print(t8.ReqMem.unique())
 
-data = pd.Series(new_frame).to_frame('TotalCPU')
-newdf = pd.DataFrame(data)
+t8['ReqMem'] = df.ReqMem.apply(lambda x: getMem(x))
 
-t7 = pd.concat([t6, newdf], axis=1)
+print(t8.ReqMem.unique())
 
-average_cpu = t7.groupby('User', as_index=False)['TotalCPU'].mean() # 'TotalCPU'
-average_cpu.columns = ['User','aTotalCPU']
-t8 = pd.merge(t7, average_cpu, on=['User'])
-t8.columns
-
-t8['ReqMem'] = t8.ReqMem.apply(lambda x : (re.sub("\D",'',x)))
-
-t8.drop(t8.index[t8['ReqMem'] == ''], inplace = True)
-
-t8['ReqMem'] = t8['ReqMem'].astype(float)
-
-average_reqmem = t8.groupby('User', as_index=False)['ReqMem'].mean() #
-average_reqmem.columns = ['User','aReqMem']
-
-t9 = pd.merge(t8, average_reqmem, on=['User'])
-
-print(t9.columns)
-# expected is the following >
-# 'User', Status', 'TotalCPU', 'MaxVMSize', 'Timelimit', 'ReqMem', 'aTotalCPU', 'aMaxVMSize', 'aTimelimit', 'aReqMem'
+t9 = t8
+print(t9.Timelimit.unique())
 
 # format of TimeLimit  [days-]hours:minutes:seconds[.microseconds]
-
 new_frame_timelimit = {} # empty dictionary
 count = 0
 for x in t9.Timelimit:
+    if type(x) == float:
+        continue
     if '-' in x:
         y = x.split('-')
         hours = 24*(y[0])
@@ -156,10 +120,36 @@ newdf_timelimit = pd.DataFrame(data_timelimit)
 
 t11 = pd.concat([t10, newdf_timelimit], axis=1)
 
-average_timelimit = t11.groupby('User', as_index=False)['Timelimit'].mean()
-average_timelimit.columns = ['User','aTimelimit']
-t12 = pd.merge(t11, average_timelimit, on=['User'])
-t13 = t12.drop(['Account'], axis=1)
+print(t11)
+print(t11.Timelimit.unique())
 
-# here we are going to write the data out to a csv file
-t13.to_csv('clean_slurm.csv') #so we can continue to clean it in a different file?
+
+t12 = t11
+
+# roles need to be cleaned
+
+print(t12.role.unique())
+
+count = 0
+new_col = {}
+for x in t12.role:
+    #y = x.split(' ')
+    new_col[count] = x
+    count += 1
+
+curr = t12.drop(['role'], axis=1)
+
+curr_data = pd.Series(new_col).to_frame('role')
+newdf_ = pd.DataFrame(curr_data)
+
+t13 = pd.concat([curr, newdf_], axis=1)
+print(t13.role.unique())
+
+t13.role[t13.role == 'role_0'] = 0
+t13.role[t13.role == 'role_1'] = 1
+t13.role[t13.role == 'role_2'] = 2
+t13.role[t13.role == '0M'] = np.nan
+
+print(t13.role.unique())
+
+t13.to_csv('../Data/slurm_role_cleaned.csv')
