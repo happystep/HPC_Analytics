@@ -1,15 +1,13 @@
 # we are going to get some basic statistics
 import pandas as pd
 
-url = "http://people.cs.ksu.edu/~happystep/HPC/slurm_sample_cleaned.csv"  # should I be using this set? or the cleaned set.
-df = pd.read_csv(url)
+path = "../Data/slurm_role_cleaned.csv"
+df = pd.read_csv(path)
 # this SHOULD ensure that we have no null values
-
-cats = ['State', 'TotalCPU', 'MaxVMSize', 'ReqMem', 'Timelimit','aTotalCPU', 'aMaxVMSize', 'aTimelimit', 'aReqMem']
 
 # descriptive statistics
 # count, mean, std, min, 25%, 50%, 75%, max 
-for i in cats:
+for i in df.columns.values:  #this should return a list of values
     print(df[i].describe())
 
 print(df.corr())
