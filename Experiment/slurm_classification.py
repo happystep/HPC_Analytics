@@ -37,6 +37,14 @@ from sklearn import utils
 df = pd.read_csv('http://people.cs.ksu.edu/~happystep/HPC/slurm_role_cleaned.csv')
 t1 = df.dropna() # this SHOULD ensure that we have no null values
 
+count = 0
+for i in t1.User.unique():
+    count+=1
+print("number of users")
+print(count)
+
+
+
 temp = t1[['State', 'ReqMem', 'Timelimit','role']]
 
 newdf = temp
@@ -69,11 +77,12 @@ models.append(('CART', DecisionTreeClassifier()))
 models.append(('NB', GaussianNB()))
 models.append(('RF', RandomForestClassifier()))
 
+
 # evaluate each model in turn
 results = []
 names = []
 times = []
-scoring = 'accuracy'
+scoring = 'f1'
 for name, model in models:
     s = time.time()
     kfold = model_selection.KFold(n_splits=10, random_state=seed)
@@ -85,6 +94,8 @@ for name, model in models:
     model.fit(x_train, training_scores_encoded)
     predictions = model.predict(x_validation)
     print('accuracy score: ', accuracy_score(y_validation, predictions))
+    print(confusion_matrix(y_validation, predictions))
+    print(classification_report(y_validation, predictions))
     e = time.time()
     print(msg)
     times.append(e - s)

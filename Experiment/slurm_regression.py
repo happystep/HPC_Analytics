@@ -43,7 +43,7 @@ from sklearn.svm import SVR
 df = pd.read_csv('http://people.cs.ksu.edu/~happystep/HPC/slurm_role_cleaned.csv')
 t1 = df.dropna() # this SHOULD ensure that we have no null values
 
-temp = t1[['State', 'ReqMem', 'Timelimit','role']]
+temp = t1[['Timelimit', 'ReqMem', 'State','role']]
 
 newdf = temp
 
@@ -56,6 +56,7 @@ models.append(('ElasticNetCV', ElasticNetCV()))
 models.append(('Ridge', Ridge()))
 models.append(('CART', DecisionTreeRegressor()))
 
+
 # memory 
 xt = fdf[['ReqMem', 'Timelimit','role']]
 
@@ -67,7 +68,7 @@ x_train, x_validation, y_train, y_validation = model_selection.train_test_split(
 
 #m = Lasso(alpha=0.15, fit_intercept=False, tol=0.00000000000001, max_iter=1000000, positive=True)
 #m = DecisionTreeRegressor()
-m = DecisionTreeRegressor()
+m = LinearRegression()
 m.fit(x_train, y_train)
 print(r2_score(y_validation, m.predict(x_validation)))
 
