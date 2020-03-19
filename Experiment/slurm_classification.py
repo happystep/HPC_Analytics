@@ -82,7 +82,7 @@ models.append(('RF', RandomForestClassifier()))
 results = []
 names = []
 times = []
-scoring = 'f1'
+scoring = 'accuracy'
 for name, model in models:
     s = time.time()
     kfold = model_selection.KFold(n_splits=10, random_state=seed)

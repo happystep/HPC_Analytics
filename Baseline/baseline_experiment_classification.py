@@ -26,8 +26,15 @@ from sklearn.metrics import accuracy_score
 from sklearn import preprocessing
 from sklearn import utils
 
-df = pd.read_csv('http://people.cs.ksu.edu/~happystep/HPC/baseline_experiment.csv')
-t1 = df.dropna()  # this SHOULD ensure that we have no null values
+
+url = 'http://people.cs.ksu.edu/~happystep/HPC/baseline_experiment.csv'
+df = pd.read_csv(url)
+
+print(df.shape)
+
+fdf = df.dropna()
+
+t1 = fdf.sample(n=60000)
 
 count = 0
 for i in t1.User.unique():
@@ -38,6 +45,8 @@ print(count)
 temp = t1[['State', 'ReqMem', 'Timelimit', 'User']]
 
 newdf = temp
+
+print(newdf.shape)
 
 fdf = newdf
 # classification for State = 1, failed
@@ -71,7 +80,7 @@ models.append(('RF', RandomForestClassifier()))
 results = []
 names = []
 times = []
-scoring = 'f1'
+scoring = 'accuracy'
 for name, model in models:
     s = time.time()
     kfold = model_selection.KFold(n_splits=10, random_state=seed)

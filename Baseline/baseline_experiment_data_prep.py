@@ -25,12 +25,14 @@ print(df.shape)
 print(df.columns.values)
 
 
-fdf = df[['State', 'ReqMem', 'Timelimit', 'User', 'Account']]
+ddr = df[['State', 'ReqMem', 'Timelimit', 'User', 'Account']]
 
-print(fdf.shape)
-print(fdf.columns.values)
+print(ddr.shape)
+print(ddr.columns.values)
 
-newdf =fdf.sample(n=60000)
+
+newdf = ddr
+
 print(newdf.shape)
 
 count = 0
@@ -111,7 +113,10 @@ t11 = pd.concat([t10, newdf_timelimit], axis=1)
 
 print(t11.Timelimit.unique())
 
-
 t12 = t11
 
-t12.to_csv('baseline_experiment.csv')
+print(t12.shape)
+
+t13 = t12.dropna()
+
+t13.to_csv('baseline_experiment.csv')

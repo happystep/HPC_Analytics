@@ -38,14 +38,23 @@ from sklearn.neighbors import KNeighborsRegressor
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.svm import SVR
 
-df = pd.read_csv('http://people.cs.ksu.edu/~happystep/HPC/baseline_experiment.csv')
-t1 = df.dropna()  # this SHOULD ensure that we have no null values
+url = 'http://people.cs.ksu.edu/~happystep/HPC/baseline_experiment.csv'
+df = pd.read_csv(url)
 
+print(df.shape)
+
+fdf = df.dropna()
+
+t1 = fdf.sample(n=60000) # this SHOULD ensure that we have no null values
+
+print(t1.shape)
 temp = t1[['Timelimit', 'ReqMem', 'State']]
 
 newdf = temp
 
 fdf = newdf
+
+print(fdf.shape)
 
 models = []
 models.append(('LR', LinearRegression()))
@@ -55,10 +64,10 @@ models.append(('Ridge', Ridge()))
 models.append(('CART', DecisionTreeRegressor()))
 
 # time limit
-#xt = fdf[['Timelimit', 'ReqMem']]
+xt = fdf[['Timelimit', 'ReqMem']]
 
 # memory
-xt = fdf[['ReqMem', 'Timelimit']]
+#xt = fdf[['ReqMem', 'Timelimit']]
 
 xt = preprocessing.StandardScaler().fit_transform(xt.sample(frac=0.1))
 x = xt[:, 1:3]
