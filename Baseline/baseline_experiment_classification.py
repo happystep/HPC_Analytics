@@ -23,6 +23,7 @@ from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import f1_score
+from sklearn.metrics import roc_curve
 
 from sklearn import preprocessing
 from sklearn import utils
@@ -89,11 +90,19 @@ for name, model in models:
     results.append(cv_results)
     names.append(name)
     msg = "%s: %f (%f)" % (name, cv_results.mean(), cv_results.std())
-
     model.fit(x_train, training_scores_encoded)
     predictions = model.predict(x_validation)
     print('accuracy score: ', accuracy_score(y_validation, predictions))
-    print('f1 score: ', f1_score(y_validation, predictions) )
+    print('f1 score: ', f1_score(y_validation, predictions))
+    fpr_rf, tpr_rf, _ = roc_curve(y_validation, predictions)
+    plt.figure(1)
+    plt.plot([0, 1], [0, 1], 'k--')
+    plt.plot(fpr_rf, tpr_rf, label=name)
+    plt.xlabel('False positive rate')
+    plt.ylabel('True positive rate')
+    plt.title('ROC curve')
+    plt.legend(loc='best')
+    plt.show()
     print(confusion_matrix(y_validation, predictions))
     print(classification_report(y_validation, predictions))
     e = time.time()
