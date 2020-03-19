@@ -1,11 +1,10 @@
-# Code Modified originally written by Huichen 
+# Code Modified originally written by Huichen
 
-#===============start regression===============
-import pandas as pd 
+# ===============start regression===============
+import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import time
-
 
 from sklearn import model_selection
 from sklearn.metrics import r2_score
@@ -39,11 +38,10 @@ from sklearn.neighbors import KNeighborsRegressor
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.svm import SVR
 
+df = pd.read_csv('http://people.cs.ksu.edu/~happystep/HPC/baseline_experiment.csv')
+t1 = df.dropna()  # this SHOULD ensure that we have no null values
 
-df = pd.read_csv('http://people.cs.ksu.edu/~happystep/HPC/slurm_role_cleaned.csv')
-t1 = df.dropna() # this SHOULD ensure that we have no null values
-
-temp = t1[['Timelimit', 'ReqMem', 'State','role']]
+temp = t1[['Timelimit', 'ReqMem', 'State']]
 
 newdf = temp
 
@@ -56,20 +54,20 @@ models.append(('ElasticNetCV', ElasticNetCV()))
 models.append(('Ridge', Ridge()))
 models.append(('CART', DecisionTreeRegressor()))
 
-# timelimit
-xt = fdf[['Timelimit', 'ReqMem','role']]
+# time limit
+#xt = fdf[['Timelimit', 'ReqMem']]
 
-# memory 
-#xt = fdf[['ReqMem', 'Timelimit','role']]
+# memory
+xt = fdf[['ReqMem', 'Timelimit']]
 
 xt = preprocessing.StandardScaler().fit_transform(xt.sample(frac=0.1))
-x = xt[:,1:2]
-y = xt[:,0]
+x = xt[:, 1:3]
+y = xt[:, 0]
 
 x_train, x_validation, y_train, y_validation = model_selection.train_test_split(x, y, test_size=0.2, random_state=7)
 
-#m = Lasso(alpha=0.15, fit_intercept=False, tol=0.00000000000001, max_iter=1000000, positive=True)
-#m = DecisionTreeRegressor()
+# m = Lasso(alpha=0.15, fit_intercept=False, tol=0.00000000000001, max_iter=1000000, positive=True)
+# m = DecisionTreeRegressor()
 m = LinearRegression()
 m.fit(x_train, y_train)
 print(r2_score(y_validation, m.predict(x_validation)))
@@ -79,23 +77,22 @@ names = []
 r2 = []
 times = []
 for name, model in models:
- 
-  kfold = model_selection.KFold(n_splits=10, random_state=7)
-  cv_results = model_selection.cross_val_score(model, x_train, y_train, cv=kfold, scoring='neg_mean_squared_error')
-   
-  results.append(cv_results)
-  names.append(name)
-  msg = "%s: %f (%f)" % (name, cv_results.mean(), cv_results.std())
-  print(msg)
-  s = time.time()    
-  model.fit(x_train, y_train)
-  y_pred_test = model.predict(x_validation)
-  r2s = r2_score(y_validation, y_pred_test)
-  e = time.time()
-  t = e - s
-  times.append(t)
-  print('time: ', t)
-  r2.append(r2s)
-  print('r2: ', r2s)
+    kfold = model_selection.KFold(n_splits=10, random_state=7)
+    cv_results = model_selection.cross_val_score(model, x_train, y_train, cv=kfold, scoring='neg_mean_squared_error')
 
-  #===============end regression===============
+    results.append(cv_results)
+    names.append(name)
+    msg = "%s: %f (%f)" % (name, cv_results.mean(), cv_results.std())
+    print(msg)
+    s = time.time()
+    model.fit(x_train, y_train)
+    y_pred_test = model.predict(x_validation)
+    r2s = r2_score(y_validation, y_pred_test)
+    e = time.time()
+    t = e - s
+    times.append(t)
+    print('time: ', t)
+    r2.append(r2s)
+    print('r2: ', r2s)
+
+    # ===============end regression===============
