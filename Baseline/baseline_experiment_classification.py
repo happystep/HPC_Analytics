@@ -100,7 +100,7 @@ for name, model in models:
     plt.plot(fpr_rf, tpr_rf, label=name)
     plt.xlabel('False positive rate')
     plt.ylabel('True positive rate')
-    plt.title('ROC curve')
+    plt.title('ROC curve Baseline')
     plt.legend(loc='best')
     plt.show()
     print(confusion_matrix(y_validation, predictions))
