@@ -22,6 +22,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
+from sklearn.metrics import f1_score
 
 from sklearn import preprocessing
 from sklearn import utils
@@ -92,6 +93,7 @@ for name, model in models:
     model.fit(x_train, training_scores_encoded)
     predictions = model.predict(x_validation)
     print('accuracy score: ', accuracy_score(y_validation, predictions))
+    print('f1 score: ', f1_score(y_validation, predictions) )
     print(confusion_matrix(y_validation, predictions))
     print(classification_report(y_validation, predictions))
     e = time.time()
