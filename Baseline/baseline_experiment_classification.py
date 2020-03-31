@@ -28,9 +28,8 @@ from sklearn.metrics import roc_curve
 from sklearn import preprocessing
 from sklearn import utils
 
-
-url = 'http://people.cs.ksu.edu/~happystep/HPC/baseline_experiment.csv'
-df = pd.read_csv(url)
+org = 'http://people.cs.ksu.edu/~happystep/HPC/slurm_role_cleaned.csv'
+df = pd.read_csv(org)
 
 print(df.shape)
 

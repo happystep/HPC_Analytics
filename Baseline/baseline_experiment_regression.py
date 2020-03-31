@@ -38,8 +38,8 @@ from sklearn.neighbors import KNeighborsRegressor
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.svm import SVR
 
-url = 'http://people.cs.ksu.edu/~happystep/HPC/baseline_experiment.csv'
-df = pd.read_csv(url)
+org ='http://people.cs.ksu.edu/~happystep/HPC/slurm_role_cleaned.csv'
+df = pd.read_csv(org)
 
 print(df.shape)
 
@@ -64,10 +64,10 @@ models.append(('Ridge', Ridge()))
 models.append(('CART', DecisionTreeRegressor()))
 
 # time limit
-xt = fdf[['Timelimit', 'ReqMem']]
+#xt = fdf[['Timelimit', 'ReqMem']]
 
 # memory
-#xt = fdf[['ReqMem', 'Timelimit']]
+xt = fdf[['ReqMem', 'Timelimit']]
 
 xt = preprocessing.StandardScaler().fit_transform(xt.sample(frac=0.1))
 x = xt[:, 1:3]
