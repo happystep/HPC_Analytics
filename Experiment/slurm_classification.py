@@ -32,6 +32,9 @@ from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import f1_score
 from sklearn.metrics import roc_curve
+from sklearn.metrics import precision_score
+from sklearn.metrics import recall_score
+from sklearn.metrics import roc_auc_score
 
 from sklearn import preprocessing
 from sklearn import utils
@@ -74,28 +77,42 @@ training_scores_encoded = lab_enc.fit_transform(y_train)
 seed = 7
 # # prepare models
 models = []
-models.append(('LR', LogisticRegression()))
-models.append(('CART', DecisionTreeClassifier()))
+#models.append(('LR', LogisticRegression()))
+#models.append(('CART', DecisionTreeClassifier()))
 models.append(('NB', GaussianNB()))
-models.append(('RF', RandomForestClassifier()))
+#models.append(('RF', RandomForestClassifier()))
 
 
 # evaluate each model in turn
 results = []
 names = []
 times = []
-scoring = 'accuracy'
+scoring = 'f1'
 for name, model in models:
     s = time.time()
     kfold = model_selection.KFold(n_splits=10, random_state=seed)
     cv_results = model_selection.cross_val_score(model, x, y, cv=kfold, scoring=scoring)
     results.append(cv_results)
     names.append(name)
+    print(cv_results)
     msg = "%s: %f (%f)" % (name, cv_results.mean(), cv_results.std())
     model.fit(x_train, training_scores_encoded)
     predictions = model.predict(x_validation)
+    print('precision score: ', precision_score(y_validation, predictions))
+    print('recall score: ', recall_score(y_validation, predictions))
     print('accuracy score: ', accuracy_score(y_validation, predictions))
     print('f1 score: ', f1_score(y_validation, predictions))
+
+    # fig = plt.figure(figsize=(15, 10))
+    # #fig.suptitle('Algorithm Comparison Roles')
+    # ax = fig.add_subplot(111)
+    # plt.xlabel('Algorithm')
+    # plt.ylabel('F1 Score')
+    # plt.boxplot(results)
+    # ax.set_xticklabels(names)
+    # # plt.savefig('classification1m.jpg')
+    # plt.show()
+
     fpr, tpr, _ = roc_curve(y_validation, predictions)
     plt.figure(1)
     plt.plot([0, 1], [0, 1], 'k--')
@@ -105,6 +122,7 @@ for name, model in models:
     plt.title('ROC curve with Roles')
     plt.legend(loc='best')
     plt.show()
+    print(roc_auc_score(y_validation, predictions))
     print(confusion_matrix(y_validation, predictions))
     print(classification_report(y_validation, predictions))
     e = time.time()
