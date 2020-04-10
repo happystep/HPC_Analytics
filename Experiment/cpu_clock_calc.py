@@ -3,7 +3,7 @@ import pandas as pd
 total_url = "http://people.cs.ksu.edu/~happystep/HPC/totalset_cpu.csv"
 experiment_url = "http://people.cs.ksu.edu/~happystep/HPC/experiment_cpu.csv"
 
-data_tf = pd.read_csv(experiment_url)
+data_tf = pd.read_csv(total_url)
 print(data_tf.columns.values)
 
 ## change timelimt to total cpu
@@ -51,5 +51,4 @@ t11 = pd.concat([t10, newdf_timelimit], axis=1)
 print(t11)
 print(t11.TotalCPU.unique())
 
-Total = t11['TotalCPU'].sum()
-print(Total)
+
